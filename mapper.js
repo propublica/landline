@@ -81,13 +81,17 @@
 
   var Point = function(data){
     this._raw  = data;
-    this._data = data;
+    this._data = (data.coordinates || data);
     this.max   = data;
     this.min   = data;
   };
   Point.prototype.type = "Point";
   Point.prototype.project = function(cb){
     this._data = cb.call(this, this._data);
+  };
+
+  Point.prototype.is = function(type) {
+    return type === this.type;
   };
 
   Point.prototype.asSVG = function(cb, prefix){
@@ -123,7 +127,7 @@
 
   var Polygon = function(data){
     this._raw = data;
-    Geom.call(this, data.coordinates);
+    Geom.call(this, data.coordinates || data);
   };
   inherits(Polygon, Geom);
   Polygon.prototype.child = LineString;
@@ -175,8 +179,10 @@
     cb.call(this, this._geom);
   };
 
+  Feature.prototype.type = "Feature";
+
   Feature.prototype.is = function(type) {
-    return this._geom.type === type;
+    return this.type === type;
   };
 
   Feature.prototype.asSVG = function(cb){
@@ -250,11 +256,15 @@
     var ret = {"type": "FeatureCollection", "features": []};
     var features = this._features;
 
-    var walk = function(ret, features){
-      _.each(features, function(feat) {
-        console.log(feat)
-        if(feat.is(type)) ret.features.push(feat.toJSON());
-        walk(ret, feat);
+    var walk = function(ret, feature){
+      feature.each(function(feat) {
+        if(feat.is(type)) {
+          if(feat.toJSON().coordinates)
+            ret.features.push({"geometry": feat.toJSON()});
+          else
+            ret.features.push({"geometry": {"type": feat.type, "coordinates": feat.toJSON() } });
+        }
+        if(!feat.is("Point")) return walk(ret, feat);
       });
       return ret;
     };
@@ -263,7 +273,8 @@
   };
 
   FeatureCollection.prototype.toJSON = toJSON;
-
+  FeatureCollection.prototype.type = "FeatureCollection";
+  FeatureCollection.prototype.is = function(type) { return type === this.type; };
   FeatureCollection.prototype.asSVG = function(width, height, cb){
     var min = this.min;
     var max = this.max;
