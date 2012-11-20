@@ -1,7 +1,7 @@
 
 (function(){
-  var Map = this.propublica.Map = function(data){
-    this.data   = data;
+  var Map = this.Mapper = function(data){
+    this.data = data;
   };
 
   Map.prototype.select = Map.prototype.filter = function(/* keys */){
@@ -44,6 +44,7 @@
     this._bounds();
   };
   Geom.prototype._bounds = function(){ bounds.call(this); };
+  Geom.prototype.type = "Geometry";
   Geom.prototype.each = function(cb){
     _.each(this._data, _.bind(cb, this));
   };
@@ -56,12 +57,20 @@
     this._data = this.map(function(data){ return new this.child(data); });
   };
 
+  Geom.prototype.children = function(){
+    return this._data;
+  };
+
   Geom.prototype.project = function(cb){
     this.each(function(it) { it.project(cb); });
   };
 
   Geom.prototype.asSVG = function(cb){
     return this.map(function(it){ return it.asSVG(cb); }).join(" ");
+  };
+
+  Geom.prototype.is = function(type) {
+    return type === this.type;
   };
 
   var toJSON = function(){
@@ -76,7 +85,7 @@
     this.max   = data;
     this.min   = data;
   };
-
+  Point.prototype.type = "Point";
   Point.prototype.project = function(cb){
     this._data = cb.call(this, this._data);
   };
@@ -88,12 +97,25 @@
     return prefix + data[0] + ", " + data[1];
   };
 
+  Point.prototype.x = Point.prototype.lat = function() {
+    return this._data[0];
+  };
+
+  Point.prototype.y = Point.prototype.lng = function() {
+    return this._data[1];
+  };
+
+  Point.prototype.z = Point.prototype.height = function() {
+    return this._data[2];
+  };
+
   var LineString = function(data){
     this._raw = data;
-    Geom.call(this, data);
+    Geom.call(this, data.coordinates || data);
   };
   inherits(LineString, Geom);
   LineString.prototype.child = Point;
+  LineString.prototype.type = "LineString";
 
   LineString.prototype.asSVG = function(cb){
     return this._data[0].asSVG(cb, 'M') + " " + Geom.prototype.asSVG.call(this, cb);
@@ -105,11 +127,11 @@
   };
   inherits(Polygon, Geom);
   Polygon.prototype.child = LineString;
+  Polygon.prototype.type = "Polygon";
 
   Polygon.prototype.asSVG = function(cb){
     return Geom.prototype.asSVG.call(this, cb) + 'Z';
   };
-
 
   var MultiPolygon = function(data){
     this._raw = data;
@@ -117,6 +139,15 @@
   };
   inherits(MultiPolygon, Geom);
   MultiPolygon.prototype.child = Polygon;
+  MultiPolygon.prototype.type = "MultiPolygon";
+
+  var MultiLineString = function(data){
+    this._raw = data;
+    Geom.call(this, data.coordinates);
+  };
+  inherits(MultiLineString, Geom);
+  MultiLineString.prototype.child = LineString;
+  MultiLineString.prototype.type = "MultiLineString";
 
   var geom = function(data){
     switch(data.type){
@@ -124,6 +155,10 @@
         return new Polygon(data);
       case 'MultiPolygon':
         return new MultiPolygon(data);
+      case 'LineString':
+        return new LineString(data);
+      case 'MultiLineString':
+        return new MultiLineString(data);
     }
     throw new Error("Unknown Geometry Type");
   };
@@ -140,8 +175,16 @@
     cb.call(this, this._geom);
   };
 
+  Feature.prototype.is = function(type) {
+    return this._geom.type === type;
+  };
+
   Feature.prototype.asSVG = function(cb){
     return this._geom.asSVG(cb);
+  };
+
+  Feature.prototype.geom = function(){
+    return this._geom;
   };
 
   Feature.prototype.get = function(prop){
@@ -180,7 +223,7 @@
 
   FeatureCollection.prototype.setBounds = function(bounds){
     this.min = bounds[0];
-    this.max = bounds[1]
+    this.max = bounds[1];
     return this;
   };
 
@@ -202,6 +245,23 @@
     return new FeatureCollection(ret, this._proj);
   };
 
+
+  FeatureCollection.prototype.flatten = function(type) {
+    var ret = {"type": "FeatureCollection", "features": []};
+    var features = this._features;
+
+    var walk = function(ret, features){
+      _.each(features, function(feat) {
+        console.log(feat)
+        if(feat.is(type)) ret.features.push(feat.toJSON());
+        walk(ret, feat);
+      });
+      return ret;
+    };
+
+    return new FeatureCollection(walk(ret, this));
+  };
+
   FeatureCollection.prototype.toJSON = toJSON;
 
   FeatureCollection.prototype.asSVG = function(width, height, cb){
@@ -217,5 +277,4 @@
     this._project = proj;
   };
 
-  propublica.map = function(data){ return new Map(data); };
 }).call(this);
