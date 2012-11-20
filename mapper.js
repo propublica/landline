@@ -88,6 +88,7 @@
   Point.prototype.type = "Point";
   Point.prototype.project = function(cb){
     this._data = cb.call(this, this._data);
+    return this;
   };
 
   Point.prototype.is = function(type) {
@@ -122,7 +123,7 @@
   LineString.prototype.type = "LineString";
 
   LineString.prototype.asSVG = function(cb){
-    return this._data[0].asSVG(cb, 'M') + " " + Geom.prototype.asSVG.call(this, cb);
+    return this._data[0].asSVG(cb, ' M') + " " + Geom.prototype.asSVG.call(this, cb);
   };
 
   var Polygon = function(data){
@@ -212,7 +213,10 @@
     // Todo fix fudge
     lat = height - ((lat - min[1]) * scale | 0);
     lon = ((lon - min[0]) * scale | 0);
-    return [lon, lat];
+    var ret = _.clone(point)
+    ret[0] = lon;
+    ret[1] = lat;
+    return ret;
   };
 
   var FeatureCollection = function(data){
@@ -279,6 +283,7 @@
     var min = this.min;
     var max = this.max;
     var that = this;
+    cb = _.bind(cb, this);
     this.each(function(it){
       cb(it.asSVG(function(pt) { return that._project(pt, width, height, min, max); }), it);
     });
