@@ -4,6 +4,7 @@
   var MapCanvas = this.MapperCanvas = function(container, locality, lookup) {
     this.paper     = {};
     this.events    = {};
+    this.attrs     = {};
     this.locality  = locality;
     this.container = $(container);
     this.lookup    = (lookup || {});
@@ -20,6 +21,11 @@
     this.events[evt] = cb;
   };
 
+  MapCanvas.prototype.style = function(fips, key, val) {
+    this.attrs[fips] = (this.attrs[fips] || []);
+    this.attrs[fips].push([key, val]);
+  };
+
   MapCanvas.prototype.setupHtml = function() {
     var defaults = MapCanvas.DEFAULTS;
     for (i = 0; i < defaults.length; i++) {
@@ -34,15 +40,20 @@
     var defaults = MapCanvas.DEFAULTS;
     if (this.locality === "states")   data = window.MapperStates;
     if (this.locality === "counties") data = window.MapperCounties;
-    for (i = 0; i < defaults.length; i++) {
-      // console.log(data[defaults[i].name]);
+    for (var i = 0; i < defaults.length; i++) {
       var localityMap = new Mapper(data[defaults[i].name]).all();
       localityMap.asSVG(defaults[i].width, defaults[i].height, function(svg, it) {
         var path = that.paper[defaults[i].name].path(svg);
+        var fips = it.get("c") ? it.get("s") + it.get("c") : it.get("s");
           path.attr("fill", "#b93737")
               .attr('stroke-width', 0.5)
               .attr('stroke', '#fff')
               .attr('stroke-linejoin', 'bevel');
+          if (that.attrs[fips]) {
+            for (var j = 0; j < that.attrs[fips].length; j++) {
+              path.attr(that.attrs[fips][i][0], that.attrs[fips][i][1]);
+            }
+          }
           for (evt in that.events) {
             path[evt](that.events[evt]);
           }

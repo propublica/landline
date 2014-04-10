@@ -33,10 +33,12 @@
 
     <script>
       $(function() {
-        var map = new MapperCanvas("#mappercanvas_container", "counties");
+        var map = new MapperCanvas("#mappercanvas_container", "states");
         map.on('click', function(e) {
           console.log(e);
         });
+        map.style("36", "fill", "#000000");
+        map.style("22", "fill", "green");
         map.createMap();
       });
     </script>
