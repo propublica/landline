@@ -29,13 +29,15 @@
     <script src="public/javascripts/states/states_packaged.js"></script>
     <script src="public/javascripts/counties/counties_packaged.js"></script>
     <script src="public/javascripts/mapper.js"></script>
+    <script src="public/javascripts/mapper_canvas.js"></script>
+
     <script>
       $(function() {
-       var map = new MapperCanvas("#mappercanvas_container", "counties");
-       map.on('click', function(e) {
-        console.log(e);
-       });
-       map.createMap();
+        var map = new MapperCanvas("#mappercanvas_container", "counties");
+        map.on('click', function(e) {
+          console.log(e);
+        });
+        map.createMap();
       });
     </script>
   </head>
