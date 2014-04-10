@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      #mappercanvas_container {
+        position:relative;
+        height:570px;
+        margin-top:272px;
+      }
+      /* these elements are created by MapperCanvas */
+      #mappercanvas_continental {
+        position:absolute;
+        top:10px;
+      }
+      #mappercanvas_alaska {
+        position:absolute;
+        top: 400px;
+        left: -40px;
+      }
+      #mappercanvas_hawaii {
+        position:absolute;
+        top:460px;
+        left:220px;
+      }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+    <script src="public/javascripts/states/states_packaged.js"></script>
+    <script src="public/javascripts/counties/counties_packaged.js"></script>
+    <script src="public/javascripts/mapper.js"></script>
+    <script>
+      $(function() {
+        new MapperCanvas("#mappercanvas_container", "counties");
+      });
+    </script>
+  </head>
+  <body>
+    <div id="mappercanvas_container"></div>
+  </body>
+</html>
