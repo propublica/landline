@@ -313,7 +313,7 @@
     var defaults = MapCanvas.DEFAULTS;
     for (i = 0; i < defaults.length; i++) {
       var regionEl = this.container.append("<div id='" + defaults[i].el + "'></div>");
-      this.paper[defaults[i].name] = Raphael(regionEl, defaults[i].width, defaults[i].height);
+      this.paper[defaults[i].name] = Raphael(defaults[i].el, defaults[i].width, defaults[i].height);
     }
   };
 
