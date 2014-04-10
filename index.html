@@ -31,7 +31,11 @@
     <script src="public/javascripts/mapper.js"></script>
     <script>
       $(function() {
-        new MapperCanvas("#mappercanvas_container", "counties");
+       var map = new MapperCanvas("#mappercanvas_container", "states");
+       map.on('click', function(e) {
+        console.log(e);
+       });
+       map.createMap();
       });
     </script>
   </head>

@@ -296,11 +296,11 @@
   // Requires jQuery and Raphael.
   var MapCanvas = this.MapperCanvas = function(container, locality, lookup) {
     this.paper     = {};
+    this.events    = {};
     this.locality  = locality;
     this.container = $(container);
     this.lookup    = (lookup || {});
     this.setupHtml();
-    this.createMap(locality);
   };
 
   MapCanvas.DEFAULTS = [
@@ -308,6 +308,10 @@
     {name : "alaska",      width : 250, height : 150, el : "mappercanvas_alaska",      'z-index' : "999"},
     {name : "hawaii",      width : 150, height : 120, el : "mappercanvas_hawaii",      'z-index' : "999"}
   ];
+
+  MapCanvas.prototype.on = function(evt, cb) {
+    this.events[evt] = cb;
+  };
 
   MapCanvas.prototype.setupHtml = function() {
     var defaults = MapCanvas.DEFAULTS;
@@ -317,12 +321,12 @@
     }
   };
 
-  MapCanvas.prototype.createMap = function(locality) {
+  MapCanvas.prototype.createMap = function() {
     var data;
     var that     = this;
     var defaults = MapCanvas.DEFAULTS;
-    if (locality === "states")   data = window.MapperStates;
-    if (locality === "counties") data = window.MapperCounties;
+    if (this.locality === "states")   data = window.MapperStates;
+    if (this.locality === "counties") data = window.MapperCounties;
     for (i = 0; i < defaults.length; i++) {
       // console.log(data[defaults[i].name]);
       var localityMap = new Mapper(data[defaults[i].name]).all();
@@ -332,6 +336,9 @@
               .attr('stroke-width', 0.5)
               .attr('stroke', '#fff')
               .attr('stroke-linejoin', 'bevel');
+          for (evt in that.events) {
+            path[evt](that.events[evt]);
+          }
       });
     }
   };
