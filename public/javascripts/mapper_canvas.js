@@ -35,6 +35,7 @@
   };
 
   MapCanvas.prototype.createMap = function() {
+    console.log(this.events);
     var data;
     var that     = this;
     var defaults = MapCanvas.DEFAULTS;
@@ -54,9 +55,11 @@
               path.attr(that.attrs[fips][i][0], that.attrs[fips][i][1]);
             }
           }
-          for (evt in that.events) {
-            path[evt](that.events[evt]);
-          }
+          _(that.events).each(function(func, evt) {
+            path[evt](function(e) {
+              func(e, path, it);
+            })
+          })
       });
     }
   };

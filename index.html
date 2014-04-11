@@ -7,6 +7,21 @@
         height:570px;
         margin-top:272px;
       }
+      #mappercanvas_tooltip {
+        position:absolute;
+        background:rgba(222, 222, 222, 0.95);
+        z-index:999999;
+        font-family: Helvetica, Arial, sans-serif;
+        font-weight:bold;
+        font-size:12px;
+        padding:5px;
+        border-radius:2px;
+      }
+      #mappercanvas_tooltip h2 {
+        margin:0;
+        padding:0;
+        font-size:12px;
+      }
       /* these elements are created by MapperCanvas */
       #mappercanvas_continental {
         position:absolute;
@@ -30,13 +45,28 @@
     <script src="public/javascripts/counties/counties_packaged.js"></script>
     <script src="public/javascripts/mapper.js"></script>
     <script src="public/javascripts/mapper_canvas.js"></script>
-
+    <script type="text/jst" id="mappercanvas_tooltip_tmpl">
+      <h2><%= n %></h2>
+    </script>
     <script>
       $(function() {
         var map = new MapperCanvas("#mappercanvas_container", "states");
-        map.on('click', function(e) {
-          console.log(e);
+        var tmpl = _.template($("#mappercanvas_tooltip_tmpl").html());
+        
+        map.on('click', function(e, path, data) {
+          console.log(e, path, data);
         });
+
+        map.on('mouseover', function(e, path, data) {
+          path.attr("stroke", "#000").attr("stroke-width", 1);
+          $("#mappercanvas_tooltip").html(tmpl({n : data.get('n')})).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
+        });
+
+        map.on('mouseout', function(e, path, data) {
+          $("#mappercanvas_tooltip").hide();
+          path.attr("stroke", "#fff").attr("stroke-width", 0.5);
+        });
+
         map.style("36", "fill", "#000000");
         map.style("22", "fill", "green");
         map.createMap();
@@ -45,5 +75,6 @@
   </head>
   <body>
     <div id="mappercanvas_container"></div>
+    <div id="mappercanvas_tooltip"></div>
   </body>
 </html>
