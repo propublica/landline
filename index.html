@@ -132,13 +132,14 @@
         });
 
         map.on('mouseover', function(e, path, data) {
-          path.attr("stroke", "#000").attr("stroke-width", 1);
+          console.log(path.attr("fill"));
+          path.attr("fill", "#999").attr("stroke-width", 1);
           $("#mappercanvas_tooltip").html(tmpl({n : data.get('n')})).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
         });
 
         map.on('mouseout', function(e, path, data) {
           $("#mappercanvas_tooltip").hide();
-          path.attr("stroke", "#fff").attr("stroke-width", 0.5);
+          path.attr("fill", "#cecece").attr("stroke-width", 0.5);
         });
 
         map.style("36", "fill", "#000000");
@@ -148,86 +149,112 @@
     </script>
   </head>
   <body>
-    <h1 style="font-size: 400%; text-align: center;">Mapper</h1>
     <div id="mappercanvas_container"></div>
-    <dvi class="documentation-wrapper">
-    <h1 id="mapper">Mapper</h1>
-    <p>Mapper is a JavaScript library that creates simple SVG maps compatible with <strong>all browsers</strong>.</p>
-    <h3 id="-demo-"><a href="#">Demo</a></h3>
-    <h2 id="libraries">Libraries</h2>
-    <p>Mapper includes:</p>
-    <ul>
-    <li><a href="">states_packaged.js</a> (geoJSON for US states)</li>
-    <li><a href="">counties_packaged.js</a> (geoJSON for US counties)</li>
-    <li><a href="">mapper.js</a> (Mapper library)</li>
-    </ul>
-    <p>and depends on:</p>
-    <ul>
-    <li><a href="">jQuery.js</a></li>
-    <li><a href="">underscore.js</a></li>
-    <li><a href="">raphael.js</a></li>
-    </ul>
-    <h2 id="how-to-use">How to Use</h2>
-    <h3 id="base-layer">Base Layer</h3>
-    <ol>
-    <li>Require each of the libraries listed above.</li>
-    <li>Style your <code>#mappercanvas_conainer</code> element with CSS. This will be the container for the map.</li>
-    <li>Add the <code>div</code> element with <code>id=&quot;mappercanvas_container&quot;</code> to your HTML.</li>
-    <li>Include a <code>&lt;script&gt;</code> tag, before the close of your <code>&lt;/body&gt;</code> to create a new MapperCanvas.</li>
-    </ol>
-    <h3 id="-new-mappercanvas-divid-locality-"><code>new MapperCanvas(divID, locality)</code></h3>
-    <ul>
-    <li><strong>divID</strong> is the name given to your containing element</li>
-    <li><strong>locality</strong> is either <code>counties</code> or <code>state</code> depending on what grainulairty suits your data.</li>
-    </ul>
-    <h3 id="adding-your-data">Adding Your Data</h3>
-    <h3 id="changing-colors">Changing Colors</h3>
-    <p>Basic Example:</p>
-    <pre><code class="lang-html">&lt;!doctype html&gt;
-    &lt;html&gt;
-      &lt;style&gt;
-        #mappercanvas_container {
-          position:relative;
-          height:570px;
-          margin-top:272px;
-        }
-      &lt;/style&gt;
-      &lt;body&gt;
-        &lt;div id=&quot;mappercanvas_container&quot;&gt;&lt;/div&gt;
-      &lt;script&gt;
+    <h1>Mapper</h1>
+
+<p>Mapper is a JavaScript library that creates simple SVG maps from GeoJSON. It comes with MapperCanvas, which will create US state and county maps with prepackaged GeoJSON.</p>
+
+<h2>Dependencies</h2>
+
+<p>Mapper itself only relies on underscore.js. MapperCanvas relies on jQuery, Underscore and Raphael.js.</p>
+
+<p>To create the map shown above:</p>
+
+<pre><code class="html">&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;style&gt;
+    #mappercanvas_container {
+      position:relative;
+      height:570px;
+      margin-top:272px;
+    }
+
+    /* these elements are created by MapperCanvas */
+    /* But you still need to position Alaska and Hawaii */
+    #mappercanvas_continental {
+      position:absolute;
+      top:10px;
+      width: 900px;
+    }
+    #mappercanvas_alaska {
+      position:absolute;
+      top: 400px;
+      left: -40px;
+    }
+    #mappercanvas_hawaii {
+      position:absolute;
+      top:460px;
+      left:220px;
+    }
+  &lt;/style&gt;
+  &lt;!-- load the states package --&gt;
+  &lt;script src="public/javascripts/states/states_packaged.js"&gt;&lt;/script&gt;
+
+  &lt;!-- load Mapper and MapperCanvas --&gt;
+    &lt;script src="public/javascripts/mapper.js"&gt;&lt;/script&gt;
+    &lt;script src="public/javascripts/mapper_canvas.js"&gt;&lt;/script&gt;
+
+  &lt;!-- create a tooltip container --&gt;
+    &lt;script type="text/jst" id="mappercanvas_tooltip_tmpl"&gt;
+      &lt;h2&gt;&lt;%= n %&gt;&lt;/h2&gt;
+    &lt;/script&gt;
+
+  &lt;body&gt;
+    &lt;div id="mappercanvas_container"&gt;&lt;/div&gt;
+    &lt;script&gt;
         $(function() {
-          new MapperCanvas(&quot;#mappercanvas_container&quot;, &quot;counties&quot;);
+          // Initialize the map
+          var map = new MapperCanvas("#mappercanvas_container", "states");
+
+          // add tooltips
+          map.on('mouseover', function(e, path, data) {
+            path.attr("fill", "#999").attr("stroke-width", 1);
+            $("#mappercanvas_tooltip").html(tmpl({n : data.get('n')})).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
+          });
+
+          map.on('mouseout', function(e, path, data) {
+            $("#mappercanvas_tooltip").hide();
+            path.attr("fill", "#cecece").attr("stroke-width", 0.5);
+          });
+
+          // Add map styles
+          map.style("36", "fill", "#000000");
+          map.style("22", "fill", "green");
+
+          // Draw the map
+          map.createMap();
         });
-      &lt;/script&gt;
-      &lt;/body&gt;
-    &lt;/html&gt;
-    </code></pre>
+    &lt;/script&gt;
 
-      <h2>License</h2>
+    &lt;div id="mappercanvas_tooltip"&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
-      <pre>
-        Copyright (c) 2012, ProPublica
+<h2>License</h2>
 
-        Permission is hereby granted, free of charge, to any person obtaining a copy
-        of this software and associated documentation files (the "Software"), to deal
-        in the Software without restriction, including without limitation the rights
-        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-        copies of the Software, and to permit persons to whom the Software is furnished
-        to do so, subject to the following conditions:
+<p>Copyright &copy; 2012, ProPublica</p>
 
-        The above copyright notice and this permission notice shall be included in all
-        copies or substantial portions of the Software.
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &ldquo;Software&rdquo;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is furnished
+to do so, subject to the following conditions:</p>
 
-        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-        FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-        IN THE SOFTWARE.
-      </pre>
-    </div>
-    <p><em>Mapper is a project of ProPublica.</em></p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED &ldquo;AS IS&rdquo;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.</p>
+
+<p><em>Mapper is a project of ProPublica.</em></p>
+
     <div id="mappercanvas_tooltip"></div>
   </body>
 </html>
