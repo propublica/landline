@@ -44,7 +44,7 @@
       var localityMap = new Mapper(data[defaults[i].name]).all();
       localityMap.asSVG(defaults[i].width, defaults[i].height, function(svg, it) {
         var path = that.paper[defaults[i].name].path(svg);
-        var fips = it.get("c") ? it.get("s") + it.get("c") : it.get("s");
+        var fips = it.fips = it.get("c") ? it.get("s") + it.get("c") : it.get("s");
           path.attr("fill", "#cecece")
               .attr('stroke-width', 0.5)
               .attr('stroke', '#999999')
@@ -57,8 +57,8 @@
           _(that.events).each(function(func, evt) {
             path[evt](function(e) {
               func(e, path, it);
-            })
-          })
+            });
+          });
       });
     }
   };

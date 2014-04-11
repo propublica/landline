@@ -89,6 +89,7 @@
         font-size:12px;
         padding:5px;
         border-radius:2px;
+        box-shadow:0 0 5px #444;
       }
       #mappercanvas_tooltip h2 {
         margin:0;
@@ -132,13 +133,18 @@
         });
 
         map.on('mouseover', function(e, path, data) {
+          data.existingStyle = (data.existingStyle || {});
+          data.existingStyle["fill"]        = path.attr("fill");
+          data.existingStyle["strokeWidth"] = path.attr("stroke-width");
           path.attr("fill", "#999").attr("stroke-width", 1);
           $("#mappercanvas_tooltip").html(tmpl({n : data.get('n')})).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
         });
 
         map.on('mouseout', function(e, path, data) {
           $("#mappercanvas_tooltip").hide();
-          path.attr("fill", "#cecece").attr("stroke-width", 0.5);
+          _(data.existingStyle).each(function(v, k) {
+            path.attr(k, v);
+          });
         });
 
         map.style("36", "fill", "#000000");
@@ -148,8 +154,12 @@
     </script>
   </head>
   <body>
+    <h1>Mapper</h1>
+    <p><a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper.js">Mapper</a> is a JavaScript library that creates simple SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper_canvas.js">MapperCanvas</a>, which creates easy US state and county with included data.</p>
     <div id="mappercanvas_container"></div>
     <%= mdown %>
+    <p><a href="http://opennews.org" class="org-logo"><img style="height:40px;" src="http://ryanpitts.github.io/listfilter/img/opennews-logo.png"></a></p>
+    <p><a href="http://opennews.org/code.html">Released for OpenNews Code Convening, April 2014</a></p>
     <div id="mappercanvas_tooltip"></div>
   </body>
 </html>
