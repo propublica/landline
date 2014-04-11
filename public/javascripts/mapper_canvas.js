@@ -50,9 +50,9 @@
               .attr('stroke', '#999999')
               .attr('stroke-linejoin', 'bevel');
           if (that.attrs[fips]) {
-            for (var j = 0; j < that.attrs[fips].length; j++) {
-              path.attr(that.attrs[fips][i][0], that.attrs[fips][i][1]);
-            }
+            _(that.attrs[fips]).each(function(attr) {
+              path.attr(attr[0], attr[1])
+            });
           }
           _(that.events).each(function(func, evt) {
             path[evt](function(e) {

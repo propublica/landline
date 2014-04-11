@@ -65,7 +65,7 @@ map.style("36047", "fill", "#FFEFD5");
 
 ### Full Example
 
-To create the map shown above:
+To create the map similar to the one shown above:
 
 ```html
 <!doctype html>
