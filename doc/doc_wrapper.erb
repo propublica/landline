@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      /* reset */
+      div, html, body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        vertical-align: baseline;
+      }
+
+      ul { list-style: none; padding-left: 10px;}
+      li { margin-bottom: 1em; }
+      /* text styles */
+      body {
+        font-family: "Helvetica Nueue", Helvetica, sans-serif;
+        font-size: 14px;
+        line-height: 1.7em;
+        margin-left: auto;
+        margin-right: auto;
+        width: 900px;
+        padding: 20px;
+      }
+      p, li {
+        width: 600px;
+        margin: 0px 0px 1em;
+      }
+
+      h1, h2, h3 {
+        text-rendering: optimizeLegibility;
+        margin-left: -5px;
+      }
+
+      h4 {
+        margin: 0px;
+        margin-top: 30px;
+        margin-left: -5px;
+        font-weight: normal;
+      }
+
+      h4 code {
+        padding: 4px;
+        background-color: #e6f3ff;
+      }
+
+      ol {
+        padding-left: 0px;
+      }
+
+      code, pre, tt { font-family: Monaco, monospace; font-size: 12px; }
+      tt { border:1px solid #efefef; padding: 2px;}
+      dd { margin-left: 0; }
+      dt { margin-left: 1em; }
+
+      a { color: black; }
+      a:hover { text-decoration: none; }
+      pre {
+        padding-left: 10px;
+        font-size: 12px;
+        border-left: 5px solid #efefef;
+        line-height: 1.3;
+      }
+
+      hr {
+        border: 0;
+        border-top: 1px solid #efefef;
+        height: 1px;
+      }
+
+      .documentation-wrapper {
+        width: 600px;
+        margin: 0 auto;
+        display: inherit;
+        padding-top: 60px;
+      }
+
+      #mappercanvas_container {
+        position:relative;
+        height:570px;
+        margin-top:60px;
+      }
+      #mappercanvas_tooltip {
+        position:absolute;
+        background:rgba(222, 222, 222, 0.95);
+        z-index:999999;
+        font-family: Helvetica, Arial, sans-serif;
+        font-weight:bold;
+        font-size:12px;
+        padding:5px;
+        border-radius:2px;
+      }
+      #mappercanvas_tooltip h2 {
+        margin:0;
+        padding:0;
+        font-size:12px;
+      }
+      /* these elements are created by MapperCanvas */
+      #mappercanvas_continental {
+        position:absolute;
+        top:10px;
+        width: 900px;
+      }
+      #mappercanvas_alaska {
+        position:absolute;
+        top: 400px;
+        left: -40px;
+      }
+      #mappercanvas_hawaii {
+        position:absolute;
+        top:460px;
+        left:220px;
+      }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+    <script src="public/javascripts/states/states_packaged.js"></script>
+    <script src="public/javascripts/counties/counties_packaged.js"></script>
+    <script src="public/javascripts/mapper.js"></script>
+    <script src="public/javascripts/mapper_canvas.js"></script>
+    <script type="text/jst" id="mappercanvas_tooltip_tmpl">
+      <h2><%%= n %></h2>
+    </script>
+    <script>
+      $(function() {
+        var map = new MapperCanvas("#mappercanvas_container", "states");
+        var tmpl = _.template($("#mappercanvas_tooltip_tmpl").html());
+
+        map.on('click', function(e, path, data) {
+          console.log(e, path, data);
+        });
+
+        map.on('mouseover', function(e, path, data) {
+          path.attr("fill", "#999").attr("stroke-width", 1);
+          $("#mappercanvas_tooltip").html(tmpl({n : data.get('n')})).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
+        });
+
+        map.on('mouseout', function(e, path, data) {
+          $("#mappercanvas_tooltip").hide();
+          path.attr("fill", "#cecece").attr("stroke-width", 0.5);
+        });
+
+        map.style("36", "fill", "#000000");
+        map.style("22", "fill", "green");
+        map.createMap();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="mappercanvas_container"></div>
+    <%= mdown %>
+    <div id="mappercanvas_tooltip"></div>
+  </body>
+</html>
