@@ -70,6 +70,69 @@
         height: 1px;
       }
 
+      /* styles stolen from docco */
+      body .hll { background-color: #ffffcc }
+      body .c { color: #408080; font-style: italic }  /* Comment */
+      /* body .err { border: 1px solid #FF0000 }*/         /* Error */
+      body .k { color: #954121 }                      /* Keyword */
+      body .o { color: #666666 }                      /* Operator */
+      body .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+      body .cp { color: #BC7A00 }                     /* Comment.Preproc */
+      body .c1 { color: #408080; font-style: italic } /* Comment.Single */
+      body .cs { color: #408080; font-style: italic } /* Comment.Special */
+      body .gd { color: #A00000 }                     /* Generic.Deleted */
+      body .ge { font-style: italic }                 /* Generic.Emph */
+      body .gr { color: #FF0000 }                     /* Generic.Error */
+      body .gh { color: #000080; font-weight: bold }  /* Generic.Heading */
+      body .gi { color: #00A000 }                     /* Generic.Inserted */
+      body .go { color: #808080 }                     /* Generic.Output */
+      body .gp { color: #000080; font-weight: bold }  /* Generic.Prompt */
+      body .gs { font-weight: bold }                  /* Generic.Strong */
+      body .gu { color: #800080; font-weight: bold }  /* Generic.Subheading */
+      body .gt { color: #0040D0 }                     /* Generic.Traceback */
+      body .kc { color: #954121 }                     /* Keyword.Constant */
+      body .kd { color: #954121; font-weight: bold }  /* Keyword.Declaration */
+      body .kn { color: #954121; font-weight: bold }  /* Keyword.Namespace */
+      body .kp { color: #954121 }                     /* Keyword.Pseudo */
+      body .kr { color: #954121; font-weight: bold }  /* Keyword.Reserved */
+      body .kt { color: #B00040 }                     /* Keyword.Type */
+      body .m { color: #666666 }                      /* Literal.Number */
+      body .s { color: #219161 }                      /* Literal.String */
+      body .na { color: #7D9029 }                     /* Name.Attribute */
+      body .nb { color: #954121 }                     /* Name.Builtin */
+      body .nc { color: #0000FF; font-weight: bold }  /* Name.Class */
+      body .no { color: #880000 }                     /* Name.Constant */
+      body .nd { color: #AA22FF }                     /* Name.Decorator */
+      body .ni { color: #999999; font-weight: bold }  /* Name.Entity */
+      body .ne { color: #D2413A; font-weight: bold }  /* Name.Exception */
+      body .nf { color: #0000FF }                     /* Name.Function */
+      body .nl { color: #A0A000 }                     /* Name.Label */
+      body .nn { color: #0000FF; font-weight: bold }  /* Name.Namespace */
+      body .nt { color: #954121; font-weight: bold }  /* Name.Tag */
+      body .nv { color: #19469D }                     /* Name.Variable */
+      body .ow { color: #AA22FF; font-weight: bold }  /* Operator.Word */
+      body .w { color: #bbbbbb }                      /* Text.Whitespace */
+      body .mf { color: #666666 }                     /* Literal.Number.Float */
+      body .mh { color: #666666 }                     /* Literal.Number.Hex */
+      body .mi { color: #666666 }                     /* Literal.Number.Integer */
+      body .mo { color: #666666 }                     /* Literal.Number.Oct */
+      body .sb { color: #219161 }                     /* Literal.String.Backtick */
+      body .sc { color: #219161 }                     /* Literal.String.Char */
+      body .sd { color: #219161; font-style: italic } /* Literal.String.Doc */
+      body .s2 { color: #219161 }                     /* Literal.String.Double */
+      body .se { color: #BB6622; font-weight: bold }  /* Literal.String.Escape */
+      body .sh { color: #219161 }                     /* Literal.String.Heredoc */
+      body .si { color: #BB6688; font-weight: bold }  /* Literal.String.Interpol */
+      body .sx { color: #954121 }                     /* Literal.String.Other */
+      body .sr { color: #BB6688 }                     /* Literal.String.Regex */
+      body .s1 { color: #219161 }                     /* Literal.String.Single */
+      body .ss { color: #19469D }                     /* Literal.String.Symbol */
+      body .bp { color: #954121 }                     /* Name.Builtin.Pseudo */
+      body .vc { color: #19469D }                     /* Name.Variable.Class */
+      body .vg { color: #19469D }                     /* Name.Variable.Global */
+      body .vi { color: #19469D }                     /* Name.Variable.Instance */
+      body .il { color: #666666 }                     /* Literal.Number.Integer.Long */
+
       .documentation-wrapper {
         width: 600px;
         margin: 0 auto;
@@ -178,6 +241,9 @@
     <h1>Mapper</h1>
     <p><a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper.js">Mapper</a> is a JavaScript library that creates simple SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper_canvas.js">MapperCanvas</a>, which creates easy U.S. state and county with included data.</p>
     <div id="mappercanvas_container"></div>
+    <div id="code_refer">
+      <a href="#full_example">See the code for this demo</a>
+    </div>
     <h2>Dependencies</h2>
 
 <p>Mapper itself only relies on Underscore.js. MapperCanvas relies on jQuery, Underscore and Raphael.js.</p>
@@ -186,156 +252,201 @@
 
 <p>Use Mapper to create SVG maps from raw GeoJSON.</p>
 
-<pre><code class="html">// Initialize a new map with your JSON
-var jsMap = new Mapper(json).all();
+<div class="highlight"><pre><span class="c1">// Initialize a new map with your JSON</span>
+<span class="kd">var</span> <span class="nx">jsMap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Mapper</span><span class="p">(</span><span class="nx">json</span><span class="p">).</span><span class="nx">all</span><span class="p">();</span>
 
-// Create a paper. Usually we use Raphael for this
-var paper = Raphael(el, height, width);
+<span class="c1">// Create a paper. Usually we use Raphael for this</span>
+<span class="kd">var</span> <span class="nx">paper</span> <span class="o">=</span> <span class="nx">Raphael</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">height</span><span class="p">,</span> <span class="nx">width</span><span class="p">);</span>
 
-// Pass Mapper a height and width
-// and iterate over the SVG output
-jsMap.asSVG(height, width, function(svg, data) {
-  // Pass the svg string to the paper
-  var path = paper.path(svg);
+<span class="c1">// Pass Mapper a height and width</span>
+<span class="c1">// and iterate over the SVG output</span>
+<span class="nx">jsMap</span><span class="p">.</span><span class="nx">asSVG</span><span class="p">(</span><span class="nx">height</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">svg</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Pass the svg string to the paper</span>
+  <span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">paper</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="nx">svg</span><span class="p">);</span>
 
-  // Set attributes on the path, using Raphael
-  path.attr("fill", "#cecece");
+  <span class="c1">// Set attributes on the path, using Raphael</span>
+  <span class="nx">path</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;#cecece&quot;</span><span class="p">);</span>
 
-  // Access attributes in your data
-  // and use them to style your map
-  var fips = it.get("s");
-  if (fips === "22") {
-    path.attr("fill", "green");
-  }
-});
-</code></pre>
+  <span class="c1">// Access attributes in your data</span>
+  <span class="c1">// and use them to style your map</span>
+  <span class="kd">var</span> <span class="nx">fips</span> <span class="o">=</span> <span class="nx">it</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">fips</span> <span class="o">===</span> <span class="s2">&quot;22&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
 
 <h3>MapperCanvas</h3>
 
 <p>MapperCanvas takes care of Mapper&rsquo;s boilerplate to generate maps of U.S. states and counties. To use it, include the packaged <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:</p>
 
-<pre><code class="html">// Pass in a container element and a "states" or "counties" locality
-var stateMap = new MapperCanvas(el, "states");
+<div class="highlight"><pre><span class="c1">// Pass in a container element and a &quot;states&quot; or &quot;counties&quot; locality</span>
+<span class="kd">var</span> <span class="nx">stateMap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MapperCanvas</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="s2">&quot;states&quot;</span><span class="p">);</span>
 
-// Draw the map
-map.createMap();
-</code></pre>
+<span class="c1">// Draw the map</span>
+<span class="nx">map</span><span class="p">.</span><span class="nx">createMap</span><span class="p">();</span>
+</pre></div>
+
 
 <h3>MapperCanvas methods</h3>
 
 <p><tt>MapperCanvas.prototype.on</tt> binds events to the map. It takes event, path and data attributes, which can be used to alter paths when the event fires, or trigger things like tooltips. <tt>MapperCanvas.prototype.on</tt> supports <a href="http://raphaeljs.com/reference.html">any events Raphael does</a>.</p>
 
-<pre><code class="html">map.on('mouseover', function(e, path, data) {
-    console.log(data.get('name'));
-});
-</code></pre>
+<div class="highlight"><pre><span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">));</span>
+<span class="p">});</span>
+</pre></div>
+
 
 <p><tt>MapperCanvas.prototype.style</tt> allows styling specific paths, targeting them by FIPS code. For state maps, this method takes a 2-digit FIPS. For county maps, it requires a 5-digit FIPS.</p>
 
-<pre><code class="html">map.style("36047", "fill", "#FFEFD5");
-</code></pre>
+<div class="highlight"><pre><span class="nx">map</span><span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">&quot;36047&quot;</span><span class="p">,</span> <span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;#FFEFD5&quot;</span><span class="p">);</span>
+</pre></div>
+
 
 <h3>Full Example</h3>
 
-<p>To create the map similar to the one shown above:</p>
+<div id="full_example"></div>
 
-<pre><code class="html">&lt;!doctype html&gt;
-&lt;html&gt;
-  &lt;style&gt;
-    #mappercanvas_container {
-      position:relative;
-      height:570px;
-      margin-top:272px;
-    }
 
-    #mappercanvas_tooltip {
-      position:absolute;
-      background:rgba(222, 222, 222, 0.95);
-      z-index:999999;
-      font-family: Helvetica, Arial, sans-serif;
-      font-weight:bold;
-      font-size:12px;
-      padding:5px;
-      border-radius:2px;
-      box-shadow:0 0 5px #444;
-    }
+<p>The demo above is <a href="http://censusreporter.org/data/map/?table=B06011&amp;geo_ids=040|01000US">Median Income in the Past 12 Months (In 2012 Inflation-adjusted Dollars) by Place of Birth in the United States</a> from the American Community Survey. Here&rsquo;s how to make that map:</p>
 
-    /* These elements are created by MapperCanvas, */
-    /* but you need to manually position Alaska and Hawaii */
-    #mappercanvas_continental {
-      position:absolute;
-      top:10px;
-      width: 900px;
-    }
-    #mappercanvas_alaska {
-      position:absolute;
-      top: 400px;
-      left: -40px;
-    }
-    #mappercanvas_hawaii {
-      position:absolute;
-      top:460px;
-      left:220px;
-    }
-  &lt;/style&gt;
-  &lt;!-- Bring your own copy of jQuery/Underscore/Raphael here --&gt;
+<div class="highlight"><pre><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;style&gt;</span>
+    <span class="nf">#mappercanvas_container</span> <span class="p">{</span>
+      <span class="k">position</span><span class="o">:</span><span class="k">relative</span><span class="p">;</span>
+      <span class="k">height</span><span class="o">:</span><span class="m">570px</span><span class="p">;</span>
+      <span class="k">margin-top</span><span class="o">:</span><span class="m">60px</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nf">#mappercanvas_tooltip</span> <span class="p">{</span>
+      <span class="k">position</span><span class="o">:</span><span class="k">absolute</span><span class="p">;</span>
+      <span class="k">background</span><span class="o">:</span><span class="n">rgba</span><span class="p">(</span><span class="m">222</span><span class="o">,</span> <span class="m">222</span><span class="o">,</span> <span class="m">222</span><span class="o">,</span> <span class="m">0</span><span class="o">.</span><span class="m">95</span><span class="p">);</span>
+      <span class="k">z-index</span><span class="o">:</span><span class="m">999999</span><span class="p">;</span>
+      <span class="k">font-family</span><span class="o">:</span> <span class="n">Helvetica</span><span class="o">,</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+      <span class="k">font-weight</span><span class="o">:</span><span class="k">bold</span><span class="p">;</span>
+      <span class="k">font-size</span><span class="o">:</span><span class="m">12px</span><span class="p">;</span>
+      <span class="k">padding</span><span class="o">:</span><span class="m">5px</span><span class="p">;</span>
+      <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span><span class="m">2px</span><span class="p">;</span>
+      <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span><span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#444</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nf">#mappercanvas_tooltip</span> <span class="nt">h2</span> <span class="p">{</span>
+      <span class="k">margin</span><span class="o">:</span><span class="m">0</span><span class="p">;</span>
+      <span class="k">padding</span><span class="o">:</span><span class="m">0</span><span class="p">;</span>
+      <span class="k">font-size</span><span class="o">:</span><span class="m">14px</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nc">.tooltip_sub</span> <span class="p">{</span>
+      <span class="k">font-size</span><span class="o">:</span><span class="m">12px</span><span class="p">;</span>
+      <span class="k">font-weight</span><span class="o">:</span><span class="k">normal</span><span class="p">;</span>
+      <span class="k">display</span><span class="o">:</span><span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
+      <span class="k">line-height</span><span class="o">:</span><span class="m">14px</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c">/* these elements are created by MapperCanvas */</span>
+    <span class="c">/* But you need to bring your own CSS */</span>
+    <span class="nf">#mappercanvas_continental</span> <span class="p">{</span>
+      <span class="k">position</span><span class="o">:</span><span class="k">absolute</span><span class="p">;</span>
+      <span class="k">top</span><span class="o">:</span><span class="m">10px</span><span class="p">;</span>
+      <span class="k">width</span><span class="o">:</span> <span class="m">900px</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nf">#mappercanvas_alaska</span> <span class="p">{</span>
+      <span class="k">position</span><span class="o">:</span><span class="k">absolute</span><span class="p">;</span>
+      <span class="k">top</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+      <span class="k">left</span><span class="o">:</span> <span class="m">-40px</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nf">#mappercanvas_hawaii</span> <span class="p">{</span>
+      <span class="k">position</span><span class="o">:</span><span class="k">absolute</span><span class="p">;</span>
+      <span class="k">top</span><span class="o">:</span><span class="m">460px</span><span class="p">;</span>
+      <span class="k">left</span><span class="o">:</span><span class="m">220px</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="nt">&lt;/style&gt;</span>
+  <span class="c">&lt;!-- Bring your own copy of jQuery/Underscore/Raphael here --&gt;</span>
 
-  &lt;!-- Load the states package --&gt;
-  &lt;script src="public/javascripts/states/states_packaged.js"&gt;&lt;/script&gt;
+  <span class="c">&lt;!-- Load the states package --&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;public/javascripts/states/states_packaged.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
 
-  &lt;!-- Load Mapper and MapperCanvas --&gt;
-  &lt;script src="public/javascripts/mapper.js"&gt;&lt;/script&gt;
-  &lt;script src="public/javascripts/mapper_canvas.js"&gt;&lt;/script&gt;
+  <span class="c">&lt;!-- Load Mapper and MapperCanvas --&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;public/javascripts/mapper.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;public/javascripts/mapper_canvas.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  
+  <span class="c">&lt;!-- Create a tooltip container --&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/jst&quot;</span> <span class="na">id=</span><span class="s">&quot;mappercanvas_tooltip_tmpl&quot;</span><span class="nt">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="p"><%</span><span class="o">=</span> <span class="nx">n</span> <span class="p">%></span><span class="o">&lt;</span><span class="err">/h2&gt;</span>
+    <span class="o">&lt;</span><span class="nx">span</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;tooltip_sub&quot;</span><span class="o">&gt;</span>
+      <span class="nx">Median</span> <span class="nx">income</span><span class="o">&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
+      <span class="nx">$</span><span class="p"><%</span><span class="o">=</span> <span class="nx">med_income</span> <span class="p">%></span>
+      <span class="o">&lt;</span><span class="nx">span</span> <span class="kr">class</span><span class="o">=</span><span class="s1">&#39;tooltip_moe&#39;</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span><span class="err">±</span> <span class="nx">$</span><span class="p"><%</span><span class="o">=</span> <span class="nx">moe</span> <span class="p">%></span><span class="o">&lt;</span><span class="err">/span&gt;</span>
+    <span class="o">&lt;</span><span class="err">/span&gt;</span>
+  <span class="nt">&lt;/script&gt;</span>
 
-  &lt;!-- Create a tooltip container --&gt;
-  &lt;script type="text/jst" id="mappercanvas_tooltip_tmpl"&gt;
-    &lt;h2&gt;&lt;%= n %&gt;&lt;/h2&gt;
-  &lt;/script&gt;
+  <span class="c">&lt;!-- Census median income data, via http://censusreporter.org/data/map/?table=B06011&amp;geo_ids=040|01000US --&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+    <span class="kd">var</span> <span class="nx">census</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;01&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Alabama&quot;</span><span class="p">,</span><span class="mi">21830</span><span class="p">,</span><span class="mi">266</span><span class="p">],</span><span class="s2">&quot;02&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Alaska&quot;</span><span class="p">,</span><span class="mi">29932</span><span class="p">,</span><span class="mi">1140</span><span class="p">],</span><span class="s2">&quot;04&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Arizona&quot;</span><span class="p">,</span><span class="mi">25307</span><span class="p">,</span><span class="mi">247</span><span class="p">],</span><span class="s2">&quot;05&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Arkansas&quot;</span><span class="p">,</span><span class="mi">21529</span><span class="p">,</span><span class="mi">201</span><span class="p">],</span><span class="s2">&quot;06&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;California&quot;</span><span class="p">,</span><span class="mi">25971</span><span class="p">,</span><span class="mi">104</span><span class="p">],</span><span class="s2">&quot;08&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Colorado&quot;</span><span class="p">,</span><span class="mi">29237</span><span class="p">,</span><span class="mi">430</span><span class="p">],</span><span class="s2">&quot;09&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Connecticut&quot;</span><span class="p">,</span><span class="mi">31920</span><span class="p">,</span><span class="mi">247</span><span class="p">],</span><span class="s2">&quot;10&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Delaware&quot;</span><span class="p">,</span><span class="mi">28405</span><span class="p">,</span><span class="mi">921</span><span class="p">],</span><span class="s2">&quot;11&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;District of Columbia&quot;</span><span class="p">,</span><span class="mi">38014</span><span class="p">,</span><span class="mi">1708</span><span class="p">],</span><span class="s2">&quot;12&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Florida&quot;</span><span class="p">,</span><span class="mi">23387</span><span class="p">,</span><span class="mi">172</span><span class="p">],</span><span class="s2">&quot;13&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Georgia&quot;</span><span class="p">,</span><span class="mi">24682</span><span class="p">,</span><span class="mi">253</span><span class="p">],</span><span class="s2">&quot;15&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Hawaii&quot;</span><span class="p">,</span><span class="mi">29786</span><span class="p">,</span><span class="mi">621</span><span class="p">],</span><span class="s2">&quot;16&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Idaho&quot;</span><span class="p">,</span><span class="mi">22166</span><span class="p">,</span><span class="mi">317</span><span class="p">],</span><span class="s2">&quot;17&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Illinois&quot;</span><span class="p">,</span><span class="mi">27301</span><span class="p">,</span><span class="mi">120</span><span class="p">],</span><span class="s2">&quot;18&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Indiana&quot;</span><span class="p">,</span><span class="mi">24801</span><span class="p">,</span><span class="mi">269</span><span class="p">],</span><span class="s2">&quot;19&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Iowa&quot;</span><span class="p">,</span><span class="mi">26717</span><span class="p">,</span><span class="mi">254</span><span class="p">],</span><span class="s2">&quot;20&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Kansas&quot;</span><span class="p">,</span><span class="mi">26299</span><span class="p">,</span><span class="mi">284</span><span class="p">],</span><span class="s2">&quot;21&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Kentucky&quot;</span><span class="p">,</span><span class="mi">21871</span><span class="p">,</span><span class="mi">186</span><span class="p">],</span><span class="s2">&quot;22&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Louisiana&quot;</span><span class="p">,</span><span class="mi">22416</span><span class="p">,</span><span class="mi">215</span><span class="p">],</span><span class="s2">&quot;23&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Maine&quot;</span><span class="p">,</span><span class="mi">24367</span><span class="p">,</span><span class="mi">496</span><span class="p">],</span><span class="s2">&quot;24&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Maryland&quot;</span><span class="p">,</span><span class="mi">34564</span><span class="p">,</span><span class="mi">457</span><span class="p">],</span><span class="s2">&quot;25&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Massachusetts&quot;</span><span class="p">,</span><span class="mi">31016</span><span class="p">,</span><span class="mi">231</span><span class="p">],</span><span class="s2">&quot;26&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Michigan&quot;</span><span class="p">,</span><span class="mi">23938</span><span class="p">,</span><span class="mi">206</span><span class="p">],</span><span class="s2">&quot;27&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Minnesota&quot;</span><span class="p">,</span><span class="mi">30094</span><span class="p">,</span><span class="mi">193</span><span class="p">],</span><span class="s2">&quot;28&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Mississippi&quot;</span><span class="p">,</span><span class="mi">20206</span><span class="p">,</span><span class="mi">292</span><span class="p">],</span><span class="s2">&quot;29&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Missouri&quot;</span><span class="p">,</span><span class="mi">23933</span><span class="p">,</span><span class="mi">251</span><span class="p">],</span><span class="s2">&quot;30&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Montana&quot;</span><span class="p">,</span><span class="mi">23536</span><span class="p">,</span><span class="mi">553</span><span class="p">],</span><span class="s2">&quot;31&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Nebraska&quot;</span><span class="p">,</span><span class="mi">26450</span><span class="p">,</span><span class="mi">308</span><span class="p">],</span><span class="s2">&quot;32&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Nevada&quot;</span><span class="p">,</span><span class="mi">26328</span><span class="p">,</span><span class="mi">314</span><span class="p">],</span><span class="s2">&quot;33&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;New Hampshire&quot;</span><span class="p">,</span><span class="mi">30651</span><span class="p">,</span><span class="mi">420</span><span class="p">],</span><span class="s2">&quot;34&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;New Jersey&quot;</span><span class="p">,</span><span class="mi">32158</span><span class="p">,</span><span class="mi">208</span><span class="p">],</span><span class="s2">&quot;35&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;New Mexico&quot;</span><span class="p">,</span><span class="mi">22775</span><span class="p">,</span><span class="mi">364</span><span class="p">],</span><span class="s2">&quot;36&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;New York&quot;</span><span class="p">,</span><span class="mi">28449</span><span class="p">,</span><span class="mi">247</span><span class="p">],</span><span class="s2">&quot;37&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;North Carolina&quot;</span><span class="p">,</span><span class="mi">23946</span><span class="p">,</span><span class="mi">258</span><span class="p">],</span><span class="s2">&quot;38&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;North Dakota&quot;</span><span class="p">,</span><span class="mi">29326</span><span class="p">,</span><span class="mi">721</span><span class="p">],</span><span class="s2">&quot;39&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Ohio&quot;</span><span class="p">,</span><span class="mi">24778</span><span class="p">,</span><span class="mi">170</span><span class="p">],</span><span class="s2">&quot;40&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Oklahoma&quot;</span><span class="p">,</span><span class="mi">23460</span><span class="p">,</span><span class="mi">298</span><span class="p">],</span><span class="s2">&quot;41&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Oregon&quot;</span><span class="p">,</span><span class="mi">24445</span><span class="p">,</span><span class="mi">303</span><span class="p">],</span><span class="s2">&quot;42&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Pennsylvania&quot;</span><span class="p">,</span><span class="mi">25874</span><span class="p">,</span><span class="mi">144</span><span class="p">],</span><span class="s2">&quot;44&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Rhode Island&quot;</span><span class="p">,</span><span class="mi">26840</span><span class="p">,</span><span class="mi">524</span><span class="p">],</span><span class="s2">&quot;45&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;South Carolina&quot;</span><span class="p">,</span><span class="mi">22451</span><span class="p">,</span><span class="mi">260</span><span class="p">],</span><span class="s2">&quot;46&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;South Dakota&quot;</span><span class="p">,</span><span class="mi">25866</span><span class="p">,</span><span class="mi">439</span><span class="p">],</span><span class="s2">&quot;47&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Tennessee&quot;</span><span class="p">,</span><span class="mi">22570</span><span class="p">,</span><span class="mi">265</span><span class="p">],</span><span class="s2">&quot;48&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Texas&quot;</span><span class="p">,</span><span class="mi">25227</span><span class="p">,</span><span class="mi">122</span><span class="p">],</span><span class="s2">&quot;49&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Utah&quot;</span><span class="p">,</span><span class="mi">25043</span><span class="p">,</span><span class="mi">402</span><span class="p">],</span><span class="s2">&quot;50&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Vermont&quot;</span><span class="p">,</span><span class="mi">26323</span><span class="p">,</span><span class="mi">492</span><span class="p">],</span><span class="s2">&quot;51&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Virginia&quot;</span><span class="p">,</span><span class="mi">30322</span><span class="p">,</span><span class="mi">193</span><span class="p">],</span><span class="s2">&quot;53&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Washington&quot;</span><span class="p">,</span><span class="mi">29109</span><span class="p">,</span><span class="mi">337</span><span class="p">],</span><span class="s2">&quot;54&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;West Virginia&quot;</span><span class="p">,</span><span class="mi">21494</span><span class="p">,</span><span class="mi">268</span><span class="p">],</span><span class="s2">&quot;55&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Wisconsin&quot;</span><span class="p">,</span><span class="mi">26668</span><span class="p">,</span><span class="mi">179</span><span class="p">],</span><span class="s2">&quot;56&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Wyoming&quot;</span><span class="p">,</span><span class="mi">26778</span><span class="p">,</span><span class="mi">725</span><span class="p">]};</span>
+  <span class="nt">&lt;/script&gt;</span>
 
-  &lt;body&gt;
-    &lt;div id="mappercanvas_container"&gt;&lt;/div&gt;
-    &lt;script&gt;
-      $(function() {
-        // Initialize the map
-        var map = new MapperCanvas("#mappercanvas_container", "states");
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;mappercanvas_container&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+      <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Initialize the map</span>
+        <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MapperCanvas</span><span class="p">(</span><span class="s2">&quot;#mappercanvas_container&quot;</span><span class="p">,</span> <span class="s2">&quot;states&quot;</span><span class="p">);</span>
+        
+        <span class="c1">// Set up the tooltip template</span>
+        <span class="kd">var</span> <span class="nx">tmpl</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">template</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#mappercanvas_tooltip_tmpl&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">());</span>
 
-        // Set up the tooltip template
-        var tmpl = _.template($("#mappercanvas_tooltip_tmpl").html());
+        <span class="c1">// Add tooltips, and cache the existing style</span>
+        <span class="c1">// to put it back in place on mouseout</span>
+        <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseover&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">data</span><span class="p">.</span><span class="nx">existingStyle</span> <span class="o">=</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">existingStyle</span> <span class="o">||</span> <span class="p">{});</span>
+          <span class="nx">data</span><span class="p">.</span><span class="nx">existingStyle</span><span class="p">[</span><span class="s2">&quot;fill&quot;</span><span class="p">]</span>        <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">);</span>
+          <span class="nx">data</span><span class="p">.</span><span class="nx">existingStyle</span><span class="p">[</span><span class="s2">&quot;strokeWidth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;stroke-width&quot;</span><span class="p">);</span>
+          <span class="nx">path</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;#999&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;stroke-width&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+          <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#mappercanvas_tooltip&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">tmpl</span><span class="p">({</span>
+            <span class="nx">n</span>          <span class="o">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">),</span> 
+            <span class="nx">med_income</span> <span class="o">:</span> <span class="nx">commaDelimit</span><span class="p">(</span><span class="nx">census</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">fips</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span> 
+            <span class="nx">moe</span>        <span class="o">:</span> <span class="nx">census</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">fips</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+          <span class="p">})).</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">+</span> <span class="mi">20</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">+</span> <span class="mi">20</span><span class="p">).</span><span class="nx">show</span><span class="p">();</span>
+        <span class="p">});</span>
 
-        // Add tooltips, and cache the existing style
-        // to put it back in place on mouseout
-        map.on('mouseover', function(e, path, data) {
-          data.existingStyle = (data.existingStyle || {});
-          data.existingStyle["fill"]        = path.attr("fill");
-          data.existingStyle["strokeWidth"] = path.attr("stroke-width");
-          path.attr("fill", "#999").attr("stroke-width", 1);
-          $("#mappercanvas_tooltip").html(tmpl({n : data.get('n')})).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
-        });
+        <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseout&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#mappercanvas_tooltip&quot;</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+          <span class="nx">_</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">existingStyle</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">k</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">path</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nx">k</span><span class="p">,</span> <span class="nx">v</span><span class="p">);</span>
+          <span class="p">});</span>
+        <span class="p">});</span>
 
-        map.on('mouseout', function(e, path, data) {
-          $("#mappercanvas_tooltip").hide();
-          _(data.existingStyle).each(function(v, k) {
-            path.attr(k, v);
-          });
-        });
+        <span class="c1">// Census data convenience functions</span>
+        <span class="kd">var</span> <span class="nx">incomeColor</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">income</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">income</span> <span class="o">&lt;</span> <span class="mi">23768</span><span class="p">)</span> <span class="k">return</span> <span class="s2">&quot;rgb(217, 236, 232)&quot;</span><span class="p">;</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">income</span> <span class="o">&lt;</span> <span class="mi">27329</span><span class="p">)</span> <span class="k">return</span> <span class="s2">&quot;rgb(161, 207, 198)&quot;</span><span class="p">;</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">income</span> <span class="o">&lt;</span> <span class="mi">30891</span><span class="p">)</span> <span class="k">return</span> <span class="s2">&quot;rgb(104, 179, 163)&quot;</span><span class="p">;</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">income</span> <span class="o">&lt;</span> <span class="mi">34452</span><span class="p">)</span> <span class="k">return</span> <span class="s2">&quot;rgb(66, 132, 118)&quot;</span><span class="p">;</span>
+          <span class="k">return</span> <span class="s2">&quot;rgb(38, 75, 68)&quot;</span><span class="p">;</span>
+        <span class="p">};</span>
 
-        // Add map styles
-        map.style("36", "fill", "#000000");
-        map.style("22", "fill", "green");
+        <span class="kd">var</span> <span class="nx">commaDelimit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span>
+          <span class="k">return</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="o">?</span> <span class="nx">a</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(d)(?=(ddd)+(?!d))/g</span><span class="p">,</span><span class="s2">&quot;$1,&quot;</span><span class="p">)</span> <span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+        <span class="p">};</span>
 
-        // Draw the map
-        map.createMap();
-      });
-    &lt;/script&gt;
+        <span class="c1">// Color states by income level</span>
+        <span class="nx">_</span><span class="p">(</span><span class="nx">census</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">ary</span><span class="p">,</span> <span class="nx">fips</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">map</span><span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="nx">fips</span><span class="p">,</span> <span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="nx">incomeColor</span><span class="p">(</span><span class="nx">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">]));</span>
+        <span class="p">})</span>
 
-    &lt;div id="mappercanvas_tooltip"&gt;&lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
+        <span class="c1">// Draw the map</span>
+        <span class="nx">map</span><span class="p">.</span><span class="nx">createMap</span><span class="p">();</span>
+      <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;mappercanvas_tooltip&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+
 
 <h2>License</h2>
 
-<p>Copyright &copy; 2012, ProPublica</p>
+<p>Copyright &copy; 2014, ProPublica</p>
 
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the &ldquo;Software&rdquo;), to deal
