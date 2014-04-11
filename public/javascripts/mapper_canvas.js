@@ -35,7 +35,6 @@
   };
 
   MapCanvas.prototype.createMap = function() {
-    console.log(this.events);
     var data;
     var that     = this;
     var defaults = MapCanvas.DEFAULTS;
