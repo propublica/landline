@@ -156,45 +156,47 @@
   </head>
   <body>
     <h1>Mapper</h1>
-    <p><a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper.js">Mapper</a> is a JavaScript library that creates simple SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper_canvas.js">MapperCanvas</a>, which creates easy U.S. state and county maps with included data.</p>
+    <p><a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper.js">Mapper</a> is a JavaScript library that creates simple SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper_canvas.js">MapperCanvas</a>, which creates easy U.S. state and county with included data.</p>
     <div id="mappercanvas_container"></div>
     <h2>Dependencies</h2>
 
-<p>Mapper itself only relies on Underscore.js. MapperCanvas relies on jQuery, Underscore.js and Raphael.js.</p>
+<p>Mapper itself only relies on Underscore.js. MapperCanvas relies on jQuery, Underscore and Raphael.js.</p>
 
 <h3>Mapper</h3>
 
 <p>Use Mapper to create SVG maps from raw GeoJSON.</p>
 
-<pre><code class="html">// Initialize a new map with your JSON
-var jsMap = new Mapper(json).all();
+<p>```html
+// Initialize a new map with your JSON
+var jsMap = new Mapper(json).all();</p>
 
-// Create a paper. Usually we use Raphael for this
-var paper = Raphael(el, height, width);
+<p>// Create a paper. Usually we use Raphael for this
+var paper = Raphael(el, height, width);</p>
 
-// Pass Mapper a height and width,
+<p>// Pass Mapper a height and width
 // and iterate over the SVG output
 jsMap.asSVG(height, width, function(svg, data) {
   // Pass the svg string to the paper
-  var path = paper.path(svg);
+  var path = paper.path(svg);</p>
 
-  // Set attributes on the path, using Raphael
-  path.attr("fill", "#cecece");
+<p>  // Set attributes on the path, using Raphael
+  path.attr(&ldquo;fill&rdquo;, &ldquo;#cecece&rdquo;);</p>
 
-  // Access attributes in your data
+<p>  // Access attributes in your data
   // and use them to style your map
-  var fips = it.get("s");
-  if (fips === "22") {
-    path.attr("fill", "green");
+  var fips = it.get(&ldquo;s&rdquo;);
+  if (fips === &ldquo;22&rdquo;) {
+    path.attr(&ldquo;fill&rdquo;, &ldquo;green&rdquo;);
   }
-});
-</code></pre>
+});</p>
 
-<h3>MapperCanvas</h3>
+<pre><code>
+### MapperCanvas
 
-<p>MapperCanvas takes care of Mapper&rsquo;s boilerplate to generate maps of U.S. states and counties. To use it, include the packaged <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:</p>
+MapperCanvas takes care of Mapper's boilerplate to generate maps of U.S. states and counties. To use it, include the packaged &lt;a href="https://github.com/propublica/mapper/blob/master/public/javascripts/states/states_packaged.js"&gt;states&lt;/a&gt; or &lt;a href="https://github.com/propublica/mapper/blob/master/public/javascripts/counties/counties_packaged.js"&gt;counties&lt;/a&gt; JavaScript file, then initialize and draw your map:
 
-<pre><code class="html">// Pass in a container element and a "states" or "counties" locality
+```html
+// Pass in a container element and a "states" or "counties" locality
 var stateMap = new MapperCanvas(el, "states");
 
 // Draw the map
@@ -205,112 +207,120 @@ map.createMap();
 
 <p><tt>MapperCanvas.prototype.on</tt> binds events to the map. It takes event, path and data attributes, which can be used to alter paths when the event fires, or trigger things like tooltips. <tt>MapperCanvas.prototype.on</tt> supports <a href="http://raphaeljs.com/reference.html">any events Raphael does</a>.</p>
 
-<pre><code class="html">map.on('mouseover', function(e, path, data) {
-    console.log(data.get('name'));
-});
+<p>```html
+map.on(&lsquo;mouseover&rsquo;, function(e, path, data) {
+    console.log(data.get(&lsquo;name&rsquo;));
+});</p>
+
+<pre><code>
+&lt;tt&gt;MapperCanvas.prototype.style&lt;/tt&gt; allows styling specific paths, targeting them by FIPS code. For state maps, this method takes a 2-digit FIPS. For county maps, it requires a 5-digit FIPS.
+
+```html
+map.style("36047", "fill", "#FFEFD5");
 </code></pre>
 
-<p><tt>MapperCanvas.prototype.style</tt> allows styling specific paths, targeting them by FIPS code. For state maps, this method takes a 2-digit FIPS. For county maps, it requires a 5-digit FIPS.</p>
+<h3>Full Example</h3>
 
-<pre><code class="html">map.style("36047", "fill", "#FFEFD5");
-</code></pre>
-
-<h3>Full example</h3>
 <p>To create the map shown above:</p>
 
-<pre><code class="html">&lt;!doctype html&gt;
-&lt;html&gt;
-  &lt;style&gt;
+<p>```html
+&lt;!doctype html>
+<html>
+  <style>
     #mappercanvas_container {
       position:relative;
       height:570px;
       margin-top:272px;
-    }
+    }</p>
 
-    #mappercanvas_tooltip {
-      position:absolute;
-      background:rgba(222, 222, 222, 0.95);
-      z-index:999999;
-      font-family: Helvetica, Arial, sans-serif;
-      font-weight:bold;
-      font-size:12px;
-      padding:5px;
-      border-radius:2px;
-      box-shadow:0 0 5px #444;
-    }
+<pre><code>#mappercanvas_tooltip {
+  position:absolute;
+  background:rgba(222, 222, 222, 0.95);
+  z-index:999999;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight:bold;
+  font-size:12px;
+  padding:5px;
+  border-radius:2px;
+  box-shadow:0 0 5px #444;
+}
 
-    /* These elements are created by MapperCanvas, */
-    /* but you need to manually position Alaska and Hawaii */
-    #mappercanvas_continental {
-      position:absolute;
-      top:10px;
-      width: 900px;
-    }
-    #mappercanvas_alaska {
-      position:absolute;
-      top: 400px;
-      left: -40px;
-    }
-    #mappercanvas_hawaii {
-      position:absolute;
-      top:460px;
-      left:220px;
-    }
-  &lt;/style&gt;
-  &lt;!-- Bring your own copy of jQuery/Underscore/Raphael here --&gt;
+/* These elements are created by MapperCanvas, */
+/* but you need to manually position Alaska and Hawaii */
+#mappercanvas_continental {
+  position:absolute;
+  top:10px;
+  width: 900px;
+}
+#mappercanvas_alaska {
+  position:absolute;
+  top: 400px;
+  left: -40px;
+}
+#mappercanvas_hawaii {
+  position:absolute;
+  top:460px;
+  left:220px;
+}
+</code></pre>
 
-  &lt;!-- Load the states package --&gt;
-  &lt;script src="public/javascripts/states/states_packaged.js"&gt;&lt;/script&gt;
+<p>  </style>
+  <!-- Bring your own copy of jQuery/Underscore/Raphael here --></p>
 
-  &lt;!-- Load Mapper and MapperCanvas --&gt;
-  &lt;script src="public/javascripts/mapper.js"&gt;&lt;/script&gt;
-  &lt;script src="public/javascripts/mapper_canvas.js"&gt;&lt;/script&gt;
+<p>  <!-- Load the states package -->
+  <script src="public/javascripts/states/states_packaged.js"></script></p>
 
-  &lt;!-- Create a tooltip container --&gt;
-  &lt;script type="text/jst" id="mappercanvas_tooltip_tmpl"&gt;
-    &lt;h2&gt;&lt;%= n %&gt;&lt;/h2&gt;
-  &lt;/script&gt;
+<p>  <!-- Load Mapper and MapperCanvas -->
+  <script src="public/javascripts/mapper.js"></script>
+  <script src="public/javascripts/mapper_canvas.js"></script></p>
 
-  &lt;body&gt;
-    &lt;div id="mappercanvas_container"&gt;&lt;/div&gt;
-    &lt;script&gt;
+<p>  <!-- Create a tooltip container -->
+  <script type="text/jst" id="mappercanvas_tooltip_tmpl">
+    <h2>&lt;%= n %></h2>
+  </script></p>
+
+<p>  <body>
+    <div id="mappercanvas_container"></div>
+    <script>
       $(function() {
         // Initialize the map
-        var map = new MapperCanvas("#mappercanvas_container", "states");
+        var map = new MapperCanvas(&ldquo;#mappercanvas_container&rdquo;, &ldquo;states&rdquo;);</p>
 
-        // Set up the tooltip template
-        var tmpl = _.template($("#mappercanvas_tooltip_tmpl").html());
+<pre><code>    // Set up the tooltip template
+    var tmpl = _.template($("#mappercanvas_tooltip_tmpl").html());
 
-        // Add tooltips, and cache the existing style
-        // to put it back in place on mouseout
-        map.on('mouseover', function(e, path, data) {
-          data.existingStyle = (data.existingStyle || {});
-          data.existingStyle["fill"]        = path.attr("fill");
-          data.existingStyle["strokeWidth"] = path.attr("stroke-width");
-          path.attr("fill", "#999").attr("stroke-width", 1);
-          $("#mappercanvas_tooltip").html(tmpl({n : data.get('n')})).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
-        });
+    // Add tooltips, and cache the existing style
+    // to put it back in place on mouseout
+    map.on('mouseover', function(e, path, data) {
+      data.existingStyle = (data.existingStyle || {});
+      data.existingStyle["fill"]        = path.attr("fill");
+      data.existingStyle["strokeWidth"] = path.attr("stroke-width");
+      path.attr("fill", "#999").attr("stroke-width", 1);
+      $("#mappercanvas_tooltip").html(tmpl({n : data.get('n')})).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
+    });
 
-        map.on('mouseout', function(e, path, data) {
-          $("#mappercanvas_tooltip").hide();
-          _(data.existingStyle).each(function(v, k) {
-            path.attr(k, v);
-          });
-        });
-
-        // Add map styles
-        map.style("36", "fill", "#000000");
-        map.style("22", "fill", "green");
-
-        // Draw the map
-        map.createMap();
+    map.on('mouseout', function(e, path, data) {
+      $("#mappercanvas_tooltip").hide();
+      _(data.existingStyle).each(function(v, k) {
+        path.attr(k, v);
       });
-    &lt;/script&gt;
+    });
 
-    &lt;div id="mappercanvas_tooltip"&gt;&lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
+    // Add map styles
+    map.style("36", "fill", "#000000");
+    map.style("22", "fill", "green");
+
+    // Draw the map
+    map.createMap();
+  });
+&lt;/script&gt;
+
+&lt;div id="mappercanvas_tooltip"&gt;&lt;/div&gt;
 </code></pre>
+
+<p>  </body>
+</html>
+```</p>
 
 <h2>License</h2>
 
