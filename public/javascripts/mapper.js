@@ -251,9 +251,14 @@
       if(feat.has(args)) ret.features.push(feat.toJSON());
     });
 
-    return new FeatureCollection(ret, this._proj);
+    return new FeatureCollection(ret);
   };
 
+  FeatureCollection.prototype.project = function(project){
+    this._project = project;
+    
+    return this;
+  };
 
   FeatureCollection.prototype.flatten = function(type) {
     var ret = {"type": "FeatureCollection", "features": []};
