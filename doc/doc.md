@@ -76,7 +76,7 @@ CODE
 ### Full Example
 
 <div id="full_example"></div>
-The demo above is [Median Income in the Past 12 Months (In 2012 Inflation-adjusted Dollars) by Place of Birth in the United States](http://censusreporter.org/data/map/?table=B06011&geo_ids=040|01000US) from the American Community Survey. Here's how to make that map:
+The demo above is [median income by state](http://censusreporter.org/data/map/?table=B06011&geo_ids=040|01000US) from the American Community Survey. Here's how to make that map:
 
 <%= highlight 'html', <<-CODE
 <!doctype html>
