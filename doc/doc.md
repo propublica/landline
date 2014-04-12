@@ -97,6 +97,7 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
       padding:5px;
       border-radius:2px;
       box-shadow:0 0 5px #444;
+      display:none;
     }
     #mappercanvas_tooltip h2 {
       margin:0;
