@@ -7,15 +7,16 @@
     this.attrs     = {};
     this.locality  = locality;
     this.container = $(container);
+    this.container.height(this.container.width() * 0.70);    
     this.lookup    = (lookup || {});
     this.setupHtml();
   };
 
-  MapCanvas.DEFAULTS = [
-    {name : "continental", width : 950, height : 550, el : "mappercanvas_continental", 'z-index' : "999"},
-    {name : "alaska",      width : 250, height : 150, el : "mappercanvas_alaska",      'z-index' : "999"},
-    {name : "hawaii",      width : 150, height : 120, el : "mappercanvas_hawaii",      'z-index' : "999"}
-  ];
+  MapCanvas.CONTAINERS = {
+    "continental" : {el : "mappercanvas_continental"},
+    "alaska"      : {el : "mappercanvas_alaska"},
+    "hawaii"      : {el : "mappercanvas_hawaii"}
+  };
 
   MapCanvas.prototype.on = function(evt, cb) {
     this.events[evt] = cb;
@@ -27,23 +28,49 @@
   };
 
   MapCanvas.prototype.setupHtml = function() {
-    var defaults = MapCanvas.DEFAULTS;
-    for (i = 0; i < defaults.length; i++) {
-      var regionEl = this.container.append("<div id='" + defaults[i].el + "'></div>");
-      this.paper[defaults[i].name] = Raphael(defaults[i].el, defaults[i].width, defaults[i].height);
+    var containers = MapCanvas.CONTAINERS;
+    containers["continental"] = _.extend(containers["continental"], {
+      width  : this.container.width(),
+      height : this.container.height() * 0.85,
+      top    : "0%",
+      left   : "0%"
+    });
+
+    containers["alaska"] = _.extend(containers["alaska"], {
+      width  : this.container.width() * 0.25,
+      height : this.container.height() * 0.27,
+      top    : "63%",
+      left   : "0%"
+    });
+
+    containers["hawaii"] = _.extend(containers["hawaii"], {
+      width : this.container.width() * 0.15,
+      height : this.container.height() * 0.21,
+      top : "72%",
+      left : "25%"
+    });
+
+    for (container in containers) {
+      this.container.append("<div id='" + containers[container].el + "'></div>");
+      $("#" + containers[container].el)
+        .css("top", containers[container].top)
+        .css("left", containers[container].left)
+        .css("position", "absolute");
+      this.paper[container] = Raphael(containers[container].el, containers[container].width, containers[container].height);
+
     }
   };
 
   MapCanvas.prototype.createMap = function() {
     var data;
-    var that     = this;
-    var defaults = MapCanvas.DEFAULTS;
+    var that       = this;
+    var containers = MapCanvas.CONTAINERS;
     if (this.locality === "states")   data = window.MapperStates;
     if (this.locality === "counties") data = window.MapperCounties;
-    for (var i = 0; i < defaults.length; i++) {
-      var localityMap = new Mapper(data[defaults[i].name]).all();
-      localityMap.asSVG(defaults[i].width, defaults[i].height, function(svg, it) {
-        var path = that.paper[defaults[i].name].path(svg);
+    for (container in containers) {
+      var localityMap = new Mapper(data[container]).all();
+      localityMap.asSVG(containers[container].width, containers[container].height, function(svg, it) {
+        var path = that.paper[container].path(svg);
         var fips = it.fips = it.get("c") ? it.get("s") + it.get("c") : it.get("s");
           path.attr("fill", "#cecece")
               .attr('stroke-width', 0.5)
