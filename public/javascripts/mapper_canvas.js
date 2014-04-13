@@ -10,6 +10,14 @@
     this.container.height(this.container.width() * 0.70);    
     this.lookup    = (lookup || {});
     this.setupHtml();
+
+    var that = this;
+    $(window).resize(function() {
+      that.container.height(that.container.width() * 0.70);
+      that.container.empty();
+      that.setupHtml();
+      that.createMap();
+    })
   };
 
   MapCanvas.CONTAINERS = {
@@ -33,28 +41,30 @@
       width  : this.container.width(),
       height : this.container.height() * 0.85,
       top    : "0%",
-      left   : "0%"
+      left   : 0.0
     });
 
     containers["alaska"] = _.extend(containers["alaska"], {
       width  : this.container.width() * 0.25,
       height : this.container.height() * 0.27,
       top    : "63%",
-      left   : "0%"
+      left   : 0.0
     });
 
     containers["hawaii"] = _.extend(containers["hawaii"], {
       width : this.container.width() * 0.15,
       height : this.container.height() * 0.21,
-      top : "72%",
-      left : "25%"
+      top : "70%",
+      left : 0.25
     });
 
     for (container in containers) {
       this.container.append("<div id='" + containers[container].el + "'></div>");
       $("#" + containers[container].el)
         .css("top", containers[container].top)
-        .css("left", containers[container].left)
+        // calculate how many pixels left the % is, 
+        // so Hawaii doesn't move around when the window is resized
+        .css("margin-left", this.container.width() * containers[container].left)
         .css("position", "absolute");
       this.paper[container] = Raphael(containers[container].el, containers[container].width, containers[container].height);
 
