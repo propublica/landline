@@ -1,29 +1,21 @@
 (function() {
   // MapCanvas puts default collections of maps together for you
   // Requires jQuery and Raphael
-  var MapCanvas = this.MapperCanvas = function(container, locality, opts) {
+  var MapCanvas = this.MapperCanvas = function(container, locality) {
     this.paper     = {};
     this.events    = {};
     this.attrs     = {};
-    var opts       = (opts || {});
-    // make map auto-resize by default.
-    var resize     = true;
-    resize         = (resize || opts.resize);
     this.locality  = locality;
     this.container = $(container);
-    this.container.height(this.container.width() * 0.70);  
+    this.container.css("position", "relative");
+    this.container.height(this.container.width() * 0.70);
     this.setupHtml();
-    console.log(opts.resize);
 
     var that = this;
-    if (opts.resize) {
-      $(window).resize(_.debounce(function() {
-        that.container.height(that.container.width() * 0.70);
-        that.container.empty();
-        that.setupHtml();
-        that.createMap();
-      }, 500));
-    }
+    $(window).resize(function() {
+      that.container.height(that.container.width() * 0.70);
+      that.setupHtml();
+    });
   };
 
   MapCanvas.CONTAINERS = {
@@ -42,7 +34,9 @@
   };
 
   MapCanvas.prototype.setupHtml = function() {
+    var that = this;
     var containers = MapCanvas.CONTAINERS;
+
     containers["continental"] = _.extend(containers["continental"], {
       width  : this.container.width(),
       height : this.container.height() * 0.85,
@@ -64,16 +58,27 @@
       left : 0.25
     });
 
-    for (container in containers) {
-      this.container.append("<div id='" + containers[container].el + "'></div>");
-      $("#" + containers[container].el)
-        .css("top", containers[container].top)
-        // calculate how many pixels left the % is, 
-        // so Hawaii doesn't move around when the window is resized
-        .css("margin-left", this.container.width() * containers[container].left)
-        .css("position", "absolute");
-      this.paper[container] = Raphael(containers[container].el, containers[container].width, containers[container].height);
+    var setPositions = function(container) {
+    $("#" + containers[container].el)
+      .width(containers[container].width)
+      .height(containers[container].height)
+      .css("top", containers[container].top)
+      // calculate how many pixels left the % is, 
+      // so Hawaii doesn't move around when the window is resized
+      .css("margin-left", that.container.width() * containers[container].left)
+      .css("position", "absolute");
+    }
 
+    for (container in containers) {
+      if (this.paper[container]) {
+        setPositions(container);
+      } else {
+        this.container.append("<div id='" + containers[container].el + "'></div>");
+        setPositions(container);
+        this.paper[container] = Raphael(containers[container].el)
+        this.paper[container].setViewBox(0, 0, containers[container].width, containers[container].height);
+        this.paper[container].setSize("100%", "100%");
+      }
     }
   };
 

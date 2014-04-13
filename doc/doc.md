@@ -44,7 +44,7 @@ CODE
 
 ### MapperCanvas
 
-MapperCanvas takes care of Mapper's boilerplate to generate maps of U.S. states and counties. To use it, include the packaged <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:
+MapperCanvas takes care of Mapper's boilerplate to generate responsive maps of U.S. states and counties. To use it, include the packaged <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:
 
 <%= highlight 'javascript', <<-CODE
 // Pass in a container element and a "states" or "counties" locality
@@ -52,6 +52,16 @@ var stateMap = new MapperCanvas(el, "states");
 
 // Draw the map
 map.createMap();
+CODE
+%>
+
+The only CSS MapperCanvas requires is a width on the container element.
+For example, the map above has the following styles:
+<%= highlight 'css', <<-CODE
+  #mappercanvas_container {
+    width:95%
+    max-width:600px;
+  }
 CODE
 %>
 
@@ -83,9 +93,8 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
 <html>
   <style>
     #mappercanvas_container {
-      position:relative;
-      height:570px;
-      margin-top:60px;
+      width:95%;
+      max-width:600px;
     }
     #mappercanvas_tooltip {
       position:absolute;
@@ -109,23 +118,6 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
       font-weight:normal;
       display:inline-block;
       line-height:14px;
-    }
-    /* these elements are created by MapperCanvas */
-    /* But you need to bring your own CSS */
-    #mappercanvas_continental {
-      position:absolute;
-      top:10px;
-      width: 900px;
-    }
-    #mappercanvas_alaska {
-      position:absolute;
-      top: 400px;
-      left: -40px;
-    }
-    #mappercanvas_hawaii {
-      position:absolute;
-      top:460px;
-      left:220px;
     }
   </style>
   <!-- Bring your own copy of jQuery/Underscore/Raphael here -->

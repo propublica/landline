@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Mapper</title>
   <head>
@@ -11,6 +12,9 @@
         border: 0;
         vertical-align: baseline;
       }
+      html {
+        margin: 10px auto;
+      }
 
       ul { list-style: none; padding-left: 10px;}
       li { margin-bottom: 1em; }
@@ -21,18 +25,18 @@
         line-height: 1.7em;
         margin-left: auto;
         margin-right: auto;
-        max-width: 900px;
-        margin: 10px auto;
         padding: 20px;
+        max-width:900px;
       }
       p, li {
-        width: 600px;
+        max-width:600px;
         margin: 0px 0px 1em;
       }
 
       h1, h2, h3 {
+        max-width:600px;
         text-rendering: optimizeLegibility;
-        margin: 2.5em 0 0.5em -5px;
+        margin: 1em 0 0.5em 0px;
       }
 
       h4 {
@@ -135,15 +139,13 @@
       body .il { color: #666666 }                     /* Literal.Number.Integer.Long */
 
       .documentation-wrapper {
-        width: 600px;
         margin: 0 auto;
         display: inherit;
-        padding-top: 60px;
       }
 
       #mappercanvas_container {
-        position:relative;
-        width:100%;
+        width:95%;
+        max-width:600px;
       }
       #mappercanvas_tooltip {
         position:absolute;
@@ -168,24 +170,6 @@
         display:inline-block;
         line-height:14px;
       }
-      /* these elements are created by MapperCanvas */
-/*      #mappercanvas_continental {
-        position:absolute;
-        top:10px;
-        width: 100%;
-      }
-*/      /*
-      #mappercanvas_alaska {
-        position:absolute;
-        top: 400px;
-        left: -40px;
-      }
-      #mappercanvas_hawaii {
-        position:absolute;
-        top:460px;
-        left:220px;
-      }
-      */
     </style>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
@@ -242,7 +226,7 @@
   </head>
   <body>
     <h1>Mapper</h1>
-    <p><a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper.js">Mapper</a> is a JavaScript library that creates simple SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper_canvas.js">MapperCanvas</a>, which creates easy U.S. state and county with included data.</p>
+    <p><a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper.js">Mapper</a> is a JavaScript library that creates simple SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper_canvas.js">MapperCanvas</a>, which creates easy responsive U.S. state and county maps.</p>
     <div id="mappercanvas_container"></div>
     <div id="code_refer">
       <a href="#full_example">See the code for this demo</a>
@@ -282,13 +266,23 @@
 
 <h3>MapperCanvas</h3>
 
-<p>MapperCanvas takes care of Mapper&rsquo;s boilerplate to generate maps of U.S. states and counties. To use it, include the packaged <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:</p>
+<p>MapperCanvas takes care of Mapper&rsquo;s boilerplate to generate responsive maps of U.S. states and counties. To use it, include the packaged <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:</p>
 
 <div class="highlight"><pre><span class="c1">// Pass in a container element and a &quot;states&quot; or &quot;counties&quot; locality</span>
 <span class="kd">var</span> <span class="nx">stateMap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MapperCanvas</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="s2">&quot;states&quot;</span><span class="p">);</span>
 
 <span class="c1">// Draw the map</span>
 <span class="nx">map</span><span class="p">.</span><span class="nx">createMap</span><span class="p">();</span>
+</pre></div>
+
+
+<p>The only CSS MapperCanvas requires is a width on the container element.
+For example, the map above has the following styles:</p>
+
+<div class="highlight"><pre>  <span class="nf">#mappercanvas_container</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span><span class="m">95</span><span class="o">%</span>
+    <span class="k">max-width</span><span class="o">:</span><span class="m">600px</span><span class="p">;</span>
+  <span class="p">}</span>
 </pre></div>
 
 
@@ -319,9 +313,8 @@
 <span class="nt">&lt;html&gt;</span>
   <span class="nt">&lt;style&gt;</span>
     <span class="nf">#mappercanvas_container</span> <span class="p">{</span>
-      <span class="k">position</span><span class="o">:</span><span class="k">relative</span><span class="p">;</span>
-      <span class="k">height</span><span class="o">:</span><span class="m">570px</span><span class="p">;</span>
-      <span class="k">margin-top</span><span class="o">:</span><span class="m">60px</span><span class="p">;</span>
+      <span class="k">width</span><span class="o">:</span><span class="m">95</span><span class="o">%</span><span class="p">;</span>
+      <span class="k">max-width</span><span class="o">:</span><span class="m">600px</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="nf">#mappercanvas_tooltip</span> <span class="p">{</span>
       <span class="k">position</span><span class="o">:</span><span class="k">absolute</span><span class="p">;</span>
@@ -345,23 +338,6 @@
       <span class="k">font-weight</span><span class="o">:</span><span class="k">normal</span><span class="p">;</span>
       <span class="k">display</span><span class="o">:</span><span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
       <span class="k">line-height</span><span class="o">:</span><span class="m">14px</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="c">/* these elements are created by MapperCanvas */</span>
-    <span class="c">/* But you need to bring your own CSS */</span>
-    <span class="nf">#mappercanvas_continental</span> <span class="p">{</span>
-      <span class="k">position</span><span class="o">:</span><span class="k">absolute</span><span class="p">;</span>
-      <span class="k">top</span><span class="o">:</span><span class="m">10px</span><span class="p">;</span>
-      <span class="k">width</span><span class="o">:</span> <span class="m">900px</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nf">#mappercanvas_alaska</span> <span class="p">{</span>
-      <span class="k">position</span><span class="o">:</span><span class="k">absolute</span><span class="p">;</span>
-      <span class="k">top</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-      <span class="k">left</span><span class="o">:</span> <span class="m">-40px</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nf">#mappercanvas_hawaii</span> <span class="p">{</span>
-      <span class="k">position</span><span class="o">:</span><span class="k">absolute</span><span class="p">;</span>
-      <span class="k">top</span><span class="o">:</span><span class="m">460px</span><span class="p">;</span>
-      <span class="k">left</span><span class="o">:</span><span class="m">220px</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="nt">&lt;/style&gt;</span>
   <span class="c">&lt;!-- Bring your own copy of jQuery/Underscore/Raphael here --&gt;</span>
