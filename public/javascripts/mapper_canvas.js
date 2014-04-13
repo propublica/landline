@@ -1,23 +1,29 @@
 (function() {
   // MapCanvas puts default collections of maps together for you
   // Requires jQuery and Raphael
-  var MapCanvas = this.MapperCanvas = function(container, locality, lookup) {
+  var MapCanvas = this.MapperCanvas = function(container, locality, opts) {
     this.paper     = {};
     this.events    = {};
     this.attrs     = {};
+    var opts       = (opts || {});
+    // make map auto-resize by default.
+    var resize     = true;
+    resize         = (resize || opts.resize);
     this.locality  = locality;
     this.container = $(container);
-    this.container.height(this.container.width() * 0.70);    
-    this.lookup    = (lookup || {});
+    this.container.height(this.container.width() * 0.70);  
     this.setupHtml();
+    console.log(opts.resize);
 
     var that = this;
-    $(window).resize(function() {
-      that.container.height(that.container.width() * 0.70);
-      that.container.empty();
-      that.setupHtml();
-      that.createMap();
-    })
+    if (opts.resize) {
+      $(window).resize(_.debounce(function() {
+        that.container.height(that.container.width() * 0.70);
+        that.container.empty();
+        that.setupHtml();
+        that.createMap();
+      }, 500));
+    }
   };
 
   MapCanvas.CONTAINERS = {
