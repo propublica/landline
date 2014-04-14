@@ -1,5 +1,5 @@
 (function() {
-  // MapCanvas puts default collections of maps together for you
+  // Stateline puts default collections of Landline maps together for you
   // Requires jQuery and Raphael
   var MapCanvas = Landline.Stateline = function(container, locality) {
     this.paper     = {};
@@ -95,7 +95,7 @@
         var fips = it.fips = it.get("c") ? it.get("s") + it.get("c") : it.get("s");
           path.attr("fill", "#cecece")
               .attr('stroke-width', 0.5)
-              .attr('stroke', '#999999')
+              .attr('stroke', '#ffffff')
               .attr('stroke-linejoin', 'bevel');
           if (that.attrs[fips]) {
             _(that.attrs[fips]).each(function(attr) {

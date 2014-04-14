@@ -64,6 +64,10 @@
         background: #cec;      
       }
 
+      h1 {
+        margin-top:0;
+      }
+
       h2 {
         padding:3px;
       }
@@ -238,6 +242,9 @@
           data.existingStyle["fill"]        = path.attr("fill");
           data.existingStyle["strokeWidth"] = path.attr("stroke-width");
           path.attr("fill", "#999").attr("stroke-width", 1);
+        });
+
+        map.on('mousemove', function(e, path, data) {
           $("#landline_tooltip").html(tmpl({n : data.get('n'), med_income : commaDelimit(census[data.fips][1]), moe : census[data.fips][2]})).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
         });
 
@@ -248,6 +255,7 @@
           });
         });
 
+        // Color ramp via ColorBrewer
         var incomeColor = function(income) {
           if (income < 23768) return "rgb(237,248,233)";
           if (income < 27329) return "rgb(186,228,179)";
@@ -268,15 +276,15 @@
     </script>
   </head>
   <body>
-    <h1>Landline</h1>
-    <p><a href="https://github.com/propublica/landline/blob/master/public/javascripts/landline.js">Landline</a> is a JavaScript library that creates simple SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/landline/blob/master/public/javascripts/landline.stateline.js">Landline.Stateline</a>, which creates easy responsive U.S. state and county maps.</p>
+    <h1>Landline + Stateline</h1>
+    <p><a href="https://github.com/propublica/landline/blob/master/public/javascripts/landline.js">Landline</a> is a JavaScript library that creates simple SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/landline/blob/master/public/javascripts/landline.stateline.js">Stateline</a>, which makes creating responsive U.S. state and county maps easy.</p>
     <div id="landline_container"></div>
     <div id="code_refer">
       <a href="#full_example">See the code for this demo</a>
     </div>
     <h2>Dependencies</h2>
 
-<p>Landline itself only relies on Underscore.js. Stateline relies on jQuery, Underscore and Raphael.js.</p>
+<p>Landline itself only relies on Underscore.js. Stateline relies on jQuery, Underscore and Raphael.js. NB: If you&rsquo;d like to support Internet Explorer &lt; 9, use jQuery 1.x.</p>
 
 <h3>Landline</h3>
 
@@ -307,9 +315,9 @@
 </pre></div>
 
 
-<h3>Landline.Stateline</h3>
+<h3>Stateline</h3>
 
-<p>Stateline takes care of Landline&rsquo;s boilerplate to generate responsive maps of U.S. states and counties. To use it, include the packaged <a href="https://github.com/propublica/landline/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/landline/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:</p>
+<p>Stateline uses Landline to generate responsive maps of U.S. states and counties. To use Stateline, include the packaged <a href="https://github.com/propublica/landline/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/landline/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:</p>
 
 <div class="highlight"><pre><span class="c1">// Pass in a container element and a &quot;states&quot; or &quot;counties&quot; locality</span>
 <span class="kd">var</span> <span class="nx">stateMap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Landline</span><span class="p">.</span><span class="nx">Stateline</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="s2">&quot;states&quot;</span><span class="p">);</span>
@@ -339,7 +347,7 @@ For example, the map above has the following styles:</p>
 </pre></div>
 
 
-<p><tt>Stateline.prototype.style</tt> allows styling specific paths, targeting them by FIPS code. For state maps, this method takes a 2-digit FIPS. For county maps, it requires a 5-digit FIPS.</p>
+<p><tt>Stateline.prototype.style</tt> allows styling specific paths, targeting them by <a href="http://en.wikipedia.org/wiki/Federal_Information_Processing_Standards">FIPS code</a>. For state maps, this method takes a 2-digit FIPS. For county maps, it requires a 5-digit FIPS.</p>
 
 <div class="highlight"><pre><span class="nx">map</span><span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">&quot;36047&quot;</span><span class="p">,</span> <span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;#FFEFD5&quot;</span><span class="p">);</span>
 </pre></div>
@@ -384,7 +392,7 @@ For example, the map above has the following styles:</p>
     <span class="p">}</span>
   <span class="nt">&lt;/style&gt;</span>
   <span class="c">&lt;!-- Bring your own copy of jQuery/Underscore/Raphael here --&gt;</span>
-  <span class="c">&lt;!-- To support IE, include jQuery 1.x --&gt;</span>
+  <span class="c">&lt;!-- To support IE &lt; 9, include jQuery 1.x --&gt;</span>
 
   <span class="c">&lt;!-- Load the states package --&gt;</span>
   <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;public/javascripts/states/states_packaged.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
@@ -425,11 +433,14 @@ For example, the map above has the following styles:</p>
           <span class="nx">data</span><span class="p">.</span><span class="nx">existingStyle</span><span class="p">[</span><span class="s2">&quot;fill&quot;</span><span class="p">]</span>        <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">);</span>
           <span class="nx">data</span><span class="p">.</span><span class="nx">existingStyle</span><span class="p">[</span><span class="s2">&quot;strokeWidth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;stroke-width&quot;</span><span class="p">);</span>
           <span class="nx">path</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;#999&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;stroke-width&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mousemove&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
           <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#landline_tooltip&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">tmpl</span><span class="p">({</span>
-            <span class="nx">n</span>          <span class="o">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">),</span> 
-            <span class="nx">med_income</span> <span class="o">:</span> <span class="nx">commaDelimit</span><span class="p">(</span><span class="nx">census</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">fips</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span> 
-            <span class="nx">moe</span>        <span class="o">:</span> <span class="nx">census</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">fips</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
-          <span class="p">})).</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">+</span> <span class="mi">20</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">+</span> <span class="mi">20</span><span class="p">).</span><span class="nx">show</span><span class="p">();</span>
+              <span class="nx">n</span>          <span class="o">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">),</span> 
+              <span class="nx">med_income</span> <span class="o">:</span> <span class="nx">commaDelimit</span><span class="p">(</span><span class="nx">census</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">fips</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span> 
+              <span class="nx">moe</span>        <span class="o">:</span> <span class="nx">census</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">fips</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+            <span class="p">})).</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">+</span> <span class="mi">20</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">+</span> <span class="mi">20</span><span class="p">).</span><span class="nx">show</span><span class="p">();</span>
         <span class="p">});</span>
 
         <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseout&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>

@@ -48,6 +48,10 @@
         background: #cec;      
       }
 
+      h1 {
+        margin-top:0;
+      }
+
       h2 {
         padding:3px;
       }
@@ -222,6 +226,9 @@
           data.existingStyle["fill"]        = path.attr("fill");
           data.existingStyle["strokeWidth"] = path.attr("stroke-width");
           path.attr("fill", "#999").attr("stroke-width", 1);
+        });
+
+        map.on('mousemove', function(e, path, data) {
           $("#landline_tooltip").html(tmpl({n : data.get('n'), med_income : commaDelimit(census[data.fips][1]), moe : census[data.fips][2]})).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
         });
 
@@ -232,6 +239,7 @@
           });
         });
 
+        // Color ramp via ColorBrewer
         var incomeColor = function(income) {
           if (income < 23768) return "rgb(237,248,233)";
           if (income < 27329) return "rgb(186,228,179)";
@@ -252,8 +260,8 @@
     </script>
   </head>
   <body>
-    <h1>Landline</h1>
-    <p><a href="https://github.com/propublica/landline/blob/master/public/javascripts/landline.js">Landline</a> is a JavaScript library that creates simple SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/landline/blob/master/public/javascripts/landline.stateline.js">Landline.Stateline</a>, which creates easy responsive U.S. state and county maps.</p>
+    <h1>Landline + Stateline</h1>
+    <p><a href="https://github.com/propublica/landline/blob/master/public/javascripts/landline.js">Landline</a> is a JavaScript library that creates SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/landline/blob/master/public/javascripts/landline.stateline.js">Stateline</a>, which makes creating responsive U.S. state and county maps easy.</p>
     <div id="landline_container"></div>
     <div id="code_refer">
       <a href="#full_example">See the code for this demo</a>

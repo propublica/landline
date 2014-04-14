@@ -10,7 +10,7 @@
 
 ## Dependencies
 
-Landline itself only relies on Underscore.js. Stateline relies on jQuery, Underscore and Raphael.js.
+Landline itself only relies on Underscore.js. Stateline relies on jQuery, Underscore and Raphael.js. NB: If you'd like to support Internet Explorer < 9, use jQuery 1.x.
 
 ### Landline
 
@@ -42,9 +42,9 @@ map.asSVG(height, width, function(svg, data) {
 CODE
 %>
 
-### Landline.Stateline
+### Stateline
 
-Stateline takes care of Landline's boilerplate to generate responsive maps of U.S. states and counties. To use it, include the packaged <a href="https://github.com/propublica/landline/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/landline/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:
+Stateline uses Landline to generate responsive maps of U.S. states and counties. To use Stateline, include the packaged <a href="https://github.com/propublica/landline/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/landline/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:
 
 <%= highlight 'javascript', <<-CODE
 // Pass in a container element and a "states" or "counties" locality
@@ -76,7 +76,7 @@ map.on('click', function(e, path, data) {
 CODE
 %>
 
-<tt>Stateline.prototype.style</tt> allows styling specific paths, targeting them by FIPS code. For state maps, this method takes a 2-digit FIPS. For county maps, it requires a 5-digit FIPS.
+<tt>Stateline.prototype.style</tt> allows styling specific paths, targeting them by [FIPS code](http://en.wikipedia.org/wiki/Federal_Information_Processing_Standards). For state maps, this method takes a 2-digit FIPS. For county maps, it requires a 5-digit FIPS.
 
 <%= highlight 'javascript', <<-CODE
 map.style("36047", "fill", "#FFEFD5");
@@ -121,7 +121,7 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
     }
   </style>
   <!-- Bring your own copy of jQuery/Underscore/Raphael here -->
-  <!-- To support IE, include jQuery 1.x -->
+  <!-- To support IE < 9, include jQuery 1.x -->
 
   <!-- Load the states package -->
   <script src="public/javascripts/states/states_packaged.js"></script>
@@ -162,11 +162,14 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
           data.existingStyle["fill"]        = path.attr("fill");
           data.existingStyle["strokeWidth"] = path.attr("stroke-width");
           path.attr("fill", "#999").attr("stroke-width", 1);
+        });
+
+        map.on('mousemove', function(e, path, data) {
           $("#landline_tooltip").html(tmpl({
-            n          : data.get('n'), 
-            med_income : commaDelimit(census[data.fips][1]), 
-            moe        : census[data.fips][2]
-          })).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
+              n          : data.get('n'), 
+              med_income : commaDelimit(census[data.fips][1]), 
+              moe        : census[data.fips][2]
+            })).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
         });
 
         map.on('mouseout', function(e, path, data) {
