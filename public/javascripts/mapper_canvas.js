@@ -59,25 +59,25 @@
     });
 
     var setPositions = function(container) {
-    $("#" + containers[container].el)
-      .width(containers[container].width)
-      .height(containers[container].height)
-      .css("top", containers[container].top)
-      // calculate how many pixels left the % is, 
-      // so Hawaii doesn't move around when the window is resized
-      .css("margin-left", that.container.width() * containers[container].left)
-      .css("position", "absolute");
-    }
+      $("#" + containers[container].el)
+        .width(containers[container].width)
+        .height(containers[container].height)
+        .css("top", containers[container].top)
+        // calculate how many pixels left the % is, 
+        // so Hawaii doesn't move around when the window is resized
+        .css("margin-left", that.container.width() * containers[container].left)
+        .css("position", "absolute");
+    };
 
     for (container in containers) {
       if (this.paper[container]) {
         setPositions(container);
+        this.paper[container].setSize(containers[container].width, containers[container].height);
       } else {
         this.container.append("<div id='" + containers[container].el + "'></div>");
         setPositions(container);
         this.paper[container] = Raphael(containers[container].el)
         this.paper[container].setViewBox(0, 0, containers[container].width, containers[container].height);
-        this.paper[container].setSize("100%", "100%");
       }
     }
   };
