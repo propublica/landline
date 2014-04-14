@@ -1,5 +1,5 @@
 (function(){
-  var Map = this.Mapper = function(data){
+  var Map = this.Landline = function(data){
     this.data = data;
   };
 

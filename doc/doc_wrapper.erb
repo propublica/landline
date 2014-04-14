@@ -2,7 +2,7 @@
 <html>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Mapper</title>
+  <title>Landline</title>
   <head>
     <style>
       /* reset */
@@ -18,9 +18,12 @@
 
       ul { list-style: none; padding-left: 10px;}
       li { margin-bottom: 1em; }
+
+      <%= roadgeek %>
+
       /* text styles */
       body {
-        font-family: "Helvetica Nueue", Helvetica, sans-serif;
+        font-family: "Helvetica Neue", Helvetica, sans-serif;
         font-size: 14px;
         line-height: 1.7em;
         margin-left: auto;
@@ -34,9 +37,24 @@
       }
 
       h1, h2, h3 {
-        max-width:600px;
+        max-width: 600px;
+        font-family: "roadgeek_2005_series_emRg", "Helvetica Neue", Helvetica, arial, sans-serif;
         text-rendering: optimizeLegibility;
         margin: 1em 0 0.5em 0px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        border-top: 2px solid #444;
+        padding: 5px;
+        background: #cec;      
+      }
+
+      h2 {
+        padding:3px;
+      }
+
+      h3 {
+        padding:0px 2px;
+        border-top:1px solid #444;
       }
 
       h4 {
@@ -143,26 +161,27 @@
         display: inherit;
       }
 
-      #mappercanvas_container {
+      #landline_container {
         width:95%;
         max-width:600px;
       }
-      #mappercanvas_tooltip {
+      #landline_tooltip {
         position:absolute;
-        background:rgba(222, 222, 222, 0.95);
+        background:#fff;
         z-index:999999;
         font-family: Helvetica, Arial, sans-serif;
         font-weight:bold;
         font-size:12px;
-        padding:5px;
+        padding:0 3px;
         border-radius:2px;
         box-shadow:0 0 5px #444;
         display:none;
       }
-      #mappercanvas_tooltip h2 {
-        margin:0;
-        padding:0;
+      #landline_tooltip h2 {
+        margin:2px 0 3px 0;
+        padding:3px;
         font-size:14px;
+        border:none;
       }
       .tooltip_sub {
         font-size:12px;
@@ -184,9 +203,9 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
     <script src="public/javascripts/states/states_packaged.js"></script>
     <script src="public/javascripts/counties/counties_packaged.js"></script>
-    <script src="public/javascripts/mapper.js"></script>
-    <script src="public/javascripts/mapper_canvas.js"></script>
-    <script type="text/jst" id="mappercanvas_tooltip_tmpl">
+    <script src="public/javascripts/landline.js"></script>
+    <script src="public/javascripts/landline.stateline.js"></script>
+    <script type="text/jst" id="landline_tooltip_tmpl">
       <h2><%%= n %></h2>
       <span class="tooltip_sub">Median income<br>$<%%= med_income %><span class='tooltip_moe'><br>± $<%%= moe %></span></span>
     </script>
@@ -195,30 +214,30 @@
     </script>
     <script>
       $(function() {
-        var map = new MapperCanvas("#mappercanvas_container", "states");
-        var tmpl = _.template($("#mappercanvas_tooltip_tmpl").html());
+        var map = new Landline.Stateline("#landline_container", "states");
+        var tmpl = _.template($("#landline_tooltip_tmpl").html());
 
         map.on('mouseover', function(e, path, data) {
           data.existingStyle = (data.existingStyle || {});
           data.existingStyle["fill"]        = path.attr("fill");
           data.existingStyle["strokeWidth"] = path.attr("stroke-width");
           path.attr("fill", "#999").attr("stroke-width", 1);
-          $("#mappercanvas_tooltip").html(tmpl({n : data.get('n'), med_income : commaDelimit(census[data.fips][1]), moe : census[data.fips][2]})).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
+          $("#landline_tooltip").html(tmpl({n : data.get('n'), med_income : commaDelimit(census[data.fips][1]), moe : census[data.fips][2]})).css("left", e.pageX + 20).css("top", e.pageY + 20).show();
         });
 
         map.on('mouseout', function(e, path, data) {
-          $("#mappercanvas_tooltip").hide();
+          $("#landline_tooltip").hide();
           _(data.existingStyle).each(function(v, k) {
             path.attr(k, v);
           });
         });
 
         var incomeColor = function(income) {
-          if (income < 23768) return "rgb(217, 236, 232)";
-          if (income < 27329) return "rgb(161, 207, 198)";
-          if (income < 30891) return "rgb(104, 179, 163)";
-          if (income < 34452) return "rgb(66, 132, 118)";
-          return "rgb(38, 75, 68)";
+          if (income < 23768) return "rgb(237,248,233)";
+          if (income < 27329) return "rgb(186,228,179)";
+          if (income < 30891) return "rgb(116,196,118)";
+          if (income < 34452) return "rgb(49,163,84)";
+          return "rgb(0,109,44)";
         };
 
         var commaDelimit = function(a){
@@ -233,15 +252,15 @@
     </script>
   </head>
   <body>
-    <h1>Mapper</h1>
-    <p><a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper.js">Mapper</a> is a JavaScript library that creates simple SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/mapper_canvas.js">MapperCanvas</a>, which creates easy responsive U.S. state and county maps.</p>
-    <div id="mappercanvas_container"></div>
+    <h1>Landline</h1>
+    <p><a href="https://github.com/propublica/landline/blob/master/public/javascripts/landline.js">Landline</a> is a JavaScript library that creates simple SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/landline/blob/master/public/javascripts/landline.stateline.js">Landline.Stateline</a>, which creates easy responsive U.S. state and county maps.</p>
+    <div id="landline_container"></div>
     <div id="code_refer">
       <a href="#full_example">See the code for this demo</a>
     </div>
     <%= mdown %>
     <p><a href="http://opennews.org" class="org-logo"><img style="height:40px;" src="http://ryanpitts.github.io/listfilter/img/opennews-logo.png"></a></p>
     <p><a href="http://opennews.org/code.html">Released for OpenNews Code Convening, April 2014</a></p>
-    <div id="mappercanvas_tooltip"></div>
+    <div id="landline_tooltip"></div>
   </body>
 </html>

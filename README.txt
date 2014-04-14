@@ -1,9 +1,11 @@
-                                                     
-888 888 8e   ,"Y88b 888 88e  888 88e   ,e e,  888,8, 
-888 888 88b "8" 888 888 888b 888 888b d88 88b 888 "  
-888 888 888 ,ee 888 888 888P 888 888P 888   , 888    
-888 888 888 "88 888 888 88"  888 88"   "YeeP" 888    
-                    888      888                     
-                    888      888                     
+                                                                       
+    _/                                  _/  _/  _/                     
+   _/          _/_/_/  _/_/_/      _/_/_/  _/      _/_/_/      _/_/    
+  _/        _/    _/  _/    _/  _/    _/  _/  _/  _/    _/  _/_/_/_/   
+ _/        _/    _/  _/    _/  _/    _/  _/  _/  _/    _/  _/          
+_/_/_/_/    _/_/_/  _/    _/    _/_/_/  _/  _/  _/    _/    _/_/_/     
+                                                                       
+Landline makes simple SVG maps for all browsers.
 
-Mapper makes simple maps for all browsers.
+Documentation: http://propublica.github.io/landline/
+Issues or questions: https://github.com/propublica/landline/issues

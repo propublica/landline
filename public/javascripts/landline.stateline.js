@@ -1,7 +1,7 @@
 (function() {
   // MapCanvas puts default collections of maps together for you
   // Requires jQuery and Raphael
-  var MapCanvas = this.MapperCanvas = function(container, locality) {
+  var MapCanvas = Landline.Stateline = function(container, locality) {
     this.paper     = {};
     this.events    = {};
     this.attrs     = {};
@@ -19,9 +19,9 @@
   };
 
   MapCanvas.CONTAINERS = {
-    "continental" : {el : "mappercanvas_continental"},
-    "alaska"      : {el : "mappercanvas_alaska"},
-    "hawaii"      : {el : "mappercanvas_hawaii"}
+    "continental" : {el : "landline_continental"},
+    "alaska"      : {el : "landline_alaska"},
+    "hawaii"      : {el : "landline_hawaii"}
   };
 
   MapCanvas.prototype.on = function(evt, cb) {
@@ -86,10 +86,10 @@
     var data;
     var that       = this;
     var containers = MapCanvas.CONTAINERS;
-    if (this.locality === "states")   data = window.MapperStates;
-    if (this.locality === "counties") data = window.MapperCounties;
+    if (this.locality === "states")   data = window.StatelineStates;
+    if (this.locality === "counties") data = window.StatelineCounties;
     for (container in containers) {
-      var localityMap = new Mapper(data[container]).all();
+      var localityMap = new Landline(data[container]).all();
       localityMap.asSVG(containers[container].width, containers[container].height, function(svg, it) {
         var path = that.paper[container].path(svg);
         var fips = it.fips = it.get("c") ? it.get("s") + it.get("c") : it.get("s");

@@ -10,22 +10,22 @@
 
 ## Dependencies
 
-Mapper itself only relies on Underscore.js. MapperCanvas relies on jQuery, Underscore and Raphael.js.
+Landline itself only relies on Underscore.js. Stateline relies on jQuery, Underscore and Raphael.js.
 
-### Mapper
+### Landline
 
-Use Mapper to create SVG maps from raw GeoJSON.
+Use Landline to create SVG maps from raw GeoJSON.
 
 <%= highlight 'javascript', <<-CODE
 // Initialize a new map with your JSON
-var jsMap = new Mapper(json).all();
+var map = new Landline(json).all();
 
 // Create a paper. Usually we use Raphael for this
 var paper = Raphael(el, height, width);
 
-// Pass Mapper a height and width
+// Pass Landline a height and width
 // and iterate over the SVG output
-jsMap.asSVG(height, width, function(svg, data) {
+map.asSVG(height, width, function(svg, data) {
   // Pass the svg string to the paper
   var path = paper.path(svg);
 
@@ -42,32 +42,32 @@ jsMap.asSVG(height, width, function(svg, data) {
 CODE
 %>
 
-### MapperCanvas
+### Landline.Stateline
 
-MapperCanvas takes care of Mapper's boilerplate to generate responsive maps of U.S. states and counties. To use it, include the packaged <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/mapper/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:
+Stateline takes care of Landline's boilerplate to generate responsive maps of U.S. states and counties. To use it, include the packaged <a href="https://github.com/propublica/landline/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/landline/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:
 
 <%= highlight 'javascript', <<-CODE
 // Pass in a container element and a "states" or "counties" locality
-var stateMap = new MapperCanvas(el, "states");
+var stateMap = new Landline.Stateline(el, "states");
 
 // Draw the map
-map.createMap();
+stateMap.createMap();
 CODE
 %>
 
-The only CSS MapperCanvas requires is a width on the container element.
+The only CSS Stateline requires is a width on the container element.
 For example, the map above has the following styles:
 <%= highlight 'css', <<-CODE
-  #mappercanvas_container {
+  #landline_container {
     width:95%
     max-width:600px;
   }
 CODE
 %>
 
-### MapperCanvas methods
+### Stateline methods
 
-<tt>MapperCanvas.prototype.on</tt> binds events to the map. It takes event, path and data attributes, which can be used to alter paths when the event fires, or trigger things like tooltips. <tt>MapperCanvas.prototype.on</tt> supports <a href="http://raphaeljs.com/reference.html">any events Raphael does</a>.
+<tt>Stateline.prototype.on</tt> binds events to the map. It takes event, path and data attributes, which can be used to alter paths when the event fires, or trigger things like tooltips. <tt>Stateline.prototype.on</tt> supports <a href="http://raphaeljs.com/reference.html">any events Raphael does</a>.
 
 <%= highlight 'javascript', <<-CODE
 map.on('click', function(e, path, data) {
@@ -76,7 +76,7 @@ map.on('click', function(e, path, data) {
 CODE
 %>
 
-<tt>MapperCanvas.prototype.style</tt> allows styling specific paths, targeting them by FIPS code. For state maps, this method takes a 2-digit FIPS. For county maps, it requires a 5-digit FIPS.
+<tt>Stateline.prototype.style</tt> allows styling specific paths, targeting them by FIPS code. For state maps, this method takes a 2-digit FIPS. For county maps, it requires a 5-digit FIPS.
 
 <%= highlight 'javascript', <<-CODE
 map.style("36047", "fill", "#FFEFD5");
@@ -92,11 +92,11 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
 <!doctype html>
 <html>
   <style>
-    #mappercanvas_container {
+    #landline_container {
       width:95%;
       max-width:600px;
     }
-    #mappercanvas_tooltip {
+    #landline_tooltip {
       position:absolute;
       background:rgba(222, 222, 222, 0.95);
       z-index:999999;
@@ -108,7 +108,7 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
       box-shadow:0 0 5px #444;
       display:none;
     }
-    #mappercanvas_tooltip h2 {
+    #landline_tooltip h2 {
       margin:0;
       padding:0;
       font-size:14px;
@@ -121,16 +121,17 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
     }
   </style>
   <!-- Bring your own copy of jQuery/Underscore/Raphael here -->
+  <!-- To support IE, include jQuery 1.x -->
 
   <!-- Load the states package -->
   <script src="public/javascripts/states/states_packaged.js"></script>
 
-  <!-- Load Mapper and MapperCanvas -->
-  <script src="public/javascripts/mapper.js"></script>
-  <script src="public/javascripts/mapper_canvas.js"></script>
+  <!-- Load Landline and Stateline -->
+  <script src="public/javascripts/landline.js"></script>
+  <script src="public/javascripts/landline.stateline.js"></script>
   
   <!-- Create a tooltip container -->
-  <script type="text/jst" id="mappercanvas_tooltip_tmpl">
+  <script type="text/jst" id="landline_tooltip_tmpl">
     <h2>{{= n }}</h2>
     <span class="tooltip_sub">
       Median income<br>
@@ -145,14 +146,14 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
   </script>
 
   <body>
-    <div id="mappercanvas_container"></div>
+    <div id="landline_container"></div>
     <script>
       $(function() {
         // Initialize the map
-        var map = new MapperCanvas("#mappercanvas_container", "states");
+        var map = new Landline.Stateline("#landline_container", "states");
         
         // Set up the tooltip template
-        var tmpl = _.template($("#mappercanvas_tooltip_tmpl").html());
+        var tmpl = _.template($("#landline_tooltip_tmpl").html());
 
         // Add tooltips, and cache the existing style
         // to put it back in place on mouseout
@@ -161,7 +162,7 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
           data.existingStyle["fill"]        = path.attr("fill");
           data.existingStyle["strokeWidth"] = path.attr("stroke-width");
           path.attr("fill", "#999").attr("stroke-width", 1);
-          $("#mappercanvas_tooltip").html(tmpl({
+          $("#landline_tooltip").html(tmpl({
             n          : data.get('n'), 
             med_income : commaDelimit(census[data.fips][1]), 
             moe        : census[data.fips][2]
@@ -169,7 +170,7 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
         });
 
         map.on('mouseout', function(e, path, data) {
-          $("#mappercanvas_tooltip").hide();
+          $("#landline_tooltip").hide();
           _(data.existingStyle).each(function(v, k) {
             path.attr(k, v);
           });
@@ -177,11 +178,11 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
 
         // Census data convenience functions
         var incomeColor = function(income) {
-          if (income < 23768) return "rgb(217, 236, 232)";
-          if (income < 27329) return "rgb(161, 207, 198)";
-          if (income < 30891) return "rgb(104, 179, 163)";
-          if (income < 34452) return "rgb(66, 132, 118)";
-          return "rgb(38, 75, 68)";
+          if (income < 23768) return "rgb(237,248,233)";
+          if (income < 27329) return "rgb(186,228,179)";
+          if (income < 30891) return "rgb(116,196,118)";
+          if (income < 34452) return "rgb(49,163,84)";
+          return "rgb(0,109,44)";
         };
 
         var commaDelimit = function(a){
@@ -198,7 +199,7 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
       });
     </script>
 
-    <div id="mappercanvas_tooltip"></div>
+    <div id="landline_tooltip"></div>
   </body>
 </html>
 CODE
