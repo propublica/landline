@@ -8,8 +8,6 @@
   end
 %>
 
-The source is at [Github](https://github.com/propublica/landline). Please report issues or ask questions in the [issue tracker](https://github.com/propublica/landline/issues).
-
 ## Dependencies
 
 Landline itself only relies on Underscore.js. Stateline relies on jQuery, Underscore and Raphael.js. NB: If you'd like to support Internet Explorer < 9, use jQuery 1.x.
