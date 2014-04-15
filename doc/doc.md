@@ -34,7 +34,8 @@ map.asSVG(height, width, function(svg, data) {
 
   // Access attributes in your data
   // and use them to style your map
-  var fips = it.get("s");
+  var fips = data.get("s");
+  // Color Louisiana green
   if (fips === "22") {
     path.attr("fill", "green");
   }
