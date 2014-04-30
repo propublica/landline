@@ -11,7 +11,6 @@
     this.container.css("position", "relative");
     this.container.height(this.container.width() * 0.70);
     this.setupHtml();
-    console.log(this)
 
     var that = this;
     $(window).resize(function() {
