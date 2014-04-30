@@ -11,7 +11,6 @@
     this.container.css("position", "relative");
     this.container.height(this.container.width() * 0.70);
     this.setupHtml();
-    console.log(this)
 
     var that = this;
     $(window).resize(function() {
@@ -39,9 +38,11 @@
     for (container in MapCanvas.CONTAINERS) {
       for (fips in this.attrs) {
         var path = this.lookup[fips];
-        _(this.attrs[fips]).each(function(attr) {
-          path.attr(attr[0], attr[1]);
-        });
+        if (path) {
+          _(this.attrs[fips]).each(function(attr) {
+            path.attr(attr[0], attr[1]);
+          });
+        }
       }
     }
   };
