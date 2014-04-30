@@ -38,9 +38,11 @@
     for (container in MapCanvas.CONTAINERS) {
       for (fips in this.attrs) {
         var path = this.lookup[fips];
-        _(this.attrs[fips]).each(function(attr) {
-          path.attr(attr[0], attr[1]);
-        });
+        if (path) {
+          _(this.attrs[fips]).each(function(attr) {
+            path.attr(attr[0], attr[1]);
+          });
+        }
       }
     }
   };
