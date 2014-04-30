@@ -30,8 +30,8 @@
   };
 
   MapCanvas.prototype.style = function(fips, key, val) {
-    this.attrs[fips] = (this.attrs[fips] || []);
-    this.attrs[fips].push([key, val]);
+    this.attrs[fips] = (this.attrs[fips] || {});
+    this.attrs[fips][key] = val;
   };
 
   MapCanvas.prototype.reLayout = function() {
@@ -39,8 +39,8 @@
       for (fips in this.attrs) {
         var path = this.lookup[fips];
         if (path) {
-          _(this.attrs[fips]).each(function(attr) {
-            path.attr(attr[0], attr[1]);
+          _(this.attrs[fips]).each(function(v, k) {
+            path.attr(k, v);
           });
         }
       }
@@ -113,8 +113,8 @@
             .attr('stroke', '#ffffff')
             .attr('stroke-linejoin', 'bevel');
         if (that.attrs[fips]) {
-          _(that.attrs[fips]).each(function(attr) {
-            path.attr(attr[0], attr[1])
+          _(that.attrs[fips]).each(function(v, k) {
+            path.attr(k, v)
           });
         }
         _(that.events).each(function(func, evt) {
