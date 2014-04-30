@@ -5,11 +5,13 @@
     this.paper     = {};
     this.events    = {};
     this.attrs     = {};
+    this.lookup    = {};
     this.locality  = locality;
     this.container = $(container);
     this.container.css("position", "relative");
     this.container.height(this.container.width() * 0.70);
     this.setupHtml();
+    console.log(this)
 
     var that = this;
     $(window).resize(function() {
@@ -31,6 +33,17 @@
   MapCanvas.prototype.style = function(fips, key, val) {
     this.attrs[fips] = (this.attrs[fips] || []);
     this.attrs[fips].push([key, val]);
+  };
+
+  MapCanvas.prototype.reLayout = function() {
+    for (container in MapCanvas.CONTAINERS) {
+      for (fips in this.attrs) {
+        var path = this.lookup[fips];
+        _(this.attrs[fips]).each(function(attr) {
+          path.attr(attr[0], attr[1]);
+        });
+      }
+    }
   };
 
   MapCanvas.prototype.setupHtml = function() {
@@ -93,20 +106,21 @@
       localityMap.asSVG(containers[container].width, containers[container].height, function(svg, it) {
         var path = that.paper[container].path(svg);
         var fips = it.fips = it.get("c") ? it.get("s") + it.get("c") : it.get("s");
-          path.attr("fill", "#cecece")
-              .attr('stroke-width', 0.5)
-              .attr('stroke', '#ffffff')
-              .attr('stroke-linejoin', 'bevel');
-          if (that.attrs[fips]) {
-            _(that.attrs[fips]).each(function(attr) {
-              path.attr(attr[0], attr[1])
-            });
-          }
-          _(that.events).each(function(func, evt) {
-            path[evt](function(e) {
-              func(e, path, it);
-            });
+        that.lookup[fips] = path;
+        path.attr("fill", "#cecece")
+            .attr('stroke-width', 0.5)
+            .attr('stroke', '#ffffff')
+            .attr('stroke-linejoin', 'bevel');
+        if (that.attrs[fips]) {
+          _(that.attrs[fips]).each(function(attr) {
+            path.attr(attr[0], attr[1])
           });
+        }
+        _(that.events).each(function(func, evt) {
+          path[evt](function(e) {
+            func(e, path, it);
+          });
+        });
       });
     }
   };
