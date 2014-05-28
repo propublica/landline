@@ -74,10 +74,10 @@
     });
 
     containers["dc"] = _.extend(containers["dc"], {
-      width  : this.container.width() * 0.05,
-      height : this.container.height() * 0.12,
+      width  : this.container.width() * 0.02,
+      height : this.container.height() * 0.08,
       top    : "34%",
-      left   : 0.93
+      left   : 0.92
     });
 
     var setPositions = function(container) {
@@ -102,9 +102,9 @@
         this.paper[container].setViewBox(0, 0, containers[container].width, containers[container].height);
         // draw the line for DC
         if (container === "continental") {
-          var dcLineCoordPcts   = [[0.86, 0.42], [0.93, 0.50]];
+          var dcLineCoordPcts   = [[0.88, 0.45], [0.91, 0.47]];
           var dcLineCoordPixels = _(dcLineCoordPcts).map(function(pair) { return [containers[container].width * pair[0], containers[container].height * pair[1]] });
-          this.paper[container].path(["M", dcLineCoordPixels[0][0], dcLineCoordPixels[0][1], "L", dcLineCoordPixels[1][0], dcLineCoordPixels[1][1]] ).attr("fill", "#444444").attr("stroke", "#444444").attr("stroke-width", "1").toFront();
+          this.paper[container].path(["M", dcLineCoordPixels[0][0], dcLineCoordPixels[0][1], "L", dcLineCoordPixels[1][0], dcLineCoordPixels[1][1]] ).attr("stroke", "#444444").attr("stroke-width", "0.5");
         }
       }
     }
@@ -125,8 +125,7 @@
         path.attr("fill", "#cecece")
             .attr('stroke-width', 0.5)
             .attr('stroke', '#ffffff')
-            .attr('stroke-linejoin', 'bevel')
-            .toBack(); // send paths to back so dcLine can stay on top
+            .attr('stroke-linejoin', 'bevel');
         if (that.attrs[fips]) {
           _(that.attrs[fips]).each(function(v, k) {
             path.attr(k, v)
