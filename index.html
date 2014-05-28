@@ -234,7 +234,7 @@
     </script>
     <script>
       $(function() {
-        var map = new Landline.Stateline("#landline_container", "states");
+        var map = window.currentMap = new Landline.Stateline("#landline_container", "states");
         var tmpl = _.template($("#landline_tooltip_tmpl").html());
 
         map.on('mouseover', function(e, path, data) {

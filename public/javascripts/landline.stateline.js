@@ -22,7 +22,8 @@
   MapCanvas.CONTAINERS = {
     "continental" : {el : "landline_continental"},
     "alaska"      : {el : "landline_alaska"},
-    "hawaii"      : {el : "landline_hawaii"}
+    "hawaii"      : {el : "landline_hawaii"},
+    "dc"          : {el : "landline_dc"}
   };
 
   MapCanvas.prototype.on = function(evt, cb) {
@@ -66,10 +67,17 @@
     });
 
     containers["hawaii"] = _.extend(containers["hawaii"], {
-      width : this.container.width() * 0.15,
+      width  : this.container.width() * 0.15,
       height : this.container.height() * 0.21,
-      top : "70%",
-      left : 0.25
+      top    : "70%",
+      left   : 0.25
+    });
+
+    containers["dc"] = _.extend(containers["dc"], {
+      width  : this.container.width() * 0.05,
+      height : this.container.height() * 0.12,
+      top    : "34%",
+      left   : 0.93
     });
 
     var setPositions = function(container) {
@@ -92,6 +100,12 @@
         setPositions(container);
         this.paper[container] = Raphael(containers[container].el)
         this.paper[container].setViewBox(0, 0, containers[container].width, containers[container].height);
+        // draw the line for DC
+        if (container === "continental") {
+          var dcLineCoordPcts   = [[0.86, 0.42], [0.93, 0.50]];
+          var dcLineCoordPixels = _(dcLineCoordPcts).map(function(pair) { return [containers[container].width * pair[0], containers[container].height * pair[1]] });
+          this.paper[container].path(["M", dcLineCoordPixels[0][0], dcLineCoordPixels[0][1], "L", dcLineCoordPixels[1][0], dcLineCoordPixels[1][1]] ).attr("fill", "#444444").attr("stroke", "#444444").attr("stroke-width", "1").toFront();
+        }
       }
     }
   };
@@ -111,7 +125,8 @@
         path.attr("fill", "#cecece")
             .attr('stroke-width', 0.5)
             .attr('stroke', '#ffffff')
-            .attr('stroke-linejoin', 'bevel');
+            .attr('stroke-linejoin', 'bevel')
+            .toBack(); // send paths to back so dcLine can stay on top
         if (that.attrs[fips]) {
           _(that.attrs[fips]).each(function(v, k) {
             path.attr(k, v)
