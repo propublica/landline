@@ -76,8 +76,8 @@
     containers["dc"] = _.extend(containers["dc"], {
       width  : this.container.width() * 0.02,
       height : this.container.height() * 0.08,
-      top    : "34%",
-      left   : 0.92
+      top    : "34.5%",
+      left   : 0.915
     });
 
     var setPositions = function(container) {
@@ -104,7 +104,7 @@
         if (container === "continental") {
           var dcLineCoordPcts   = [[0.88, 0.45], [0.91, 0.47]];
           var dcLineCoordPixels = _(dcLineCoordPcts).map(function(pair) { return [containers[container].width * pair[0], containers[container].height * pair[1]] });
-          this.paper[container].path(["M", dcLineCoordPixels[0][0], dcLineCoordPixels[0][1], "L", dcLineCoordPixels[1][0], dcLineCoordPixels[1][1]] ).attr("stroke", "#444444").attr("stroke-width", "0.5");
+          this.paper[container].path(["M", dcLineCoordPixels[0][0], dcLineCoordPixels[0][1], "L", dcLineCoordPixels[1][0], dcLineCoordPixels[1][1]] ).attr("stroke", "#cecece").attr("stroke-width", "0.5");
         }
       }
     }
