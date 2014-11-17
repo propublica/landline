@@ -1,12 +1,12 @@
 var options = {
   containers : {
-    "continental" : {el : "landline_continental"}
+    "contiguous" : {el : "landline_contiguous"}
   },
   main : {
     heightMultiplier : 0.8
   },
   extensions : {
-    "continental" : {
+    "contiguous" : {
       widthMultiplier : 1,
       heightMultiplier : 1,
       top    : "0%",

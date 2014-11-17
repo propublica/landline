@@ -20,7 +20,7 @@
   };
 
   MapCanvas.CONTAINERS = {
-    "continental" : {el : "landline_continental"},
+    "contiguous" : {el : "landline_contiguous"},
     "alaska"      : {el : "landline_alaska"},
     "hawaii"      : {el : "landline_hawaii"},
     "dc"          : {el : "landline_dc"}
@@ -52,7 +52,7 @@
     var that = this;
     var containers = MapCanvas.CONTAINERS;
 
-    containers["continental"] = _.extend(containers["continental"], {
+    containers["contiguous"] = _.extend(containers["contiguous"], {
       width  : this.container.width(),
       height : this.container.height() * 0.85,
       top    : "0%",
@@ -101,7 +101,7 @@
         this.paper[container] = Raphael(containers[container].el)
         this.paper[container].setViewBox(0, 0, containers[container].width, containers[container].height);
         // draw the line for DC
-        if (container === "continental") {
+        if (container === "contiguous") {
           var dcLineCoordPcts   = [[0.88, 0.45], [0.91, 0.47]];
           var dcLineCoordPixels = _(dcLineCoordPcts).map(function(pair) { return [containers[container].width * pair[0], containers[container].height * pair[1]] });
           this.paper[container].path(["M", dcLineCoordPixels[0][0], dcLineCoordPixels[0][1], "L", dcLineCoordPixels[1][0], dcLineCoordPixels[1][1]] ).attr("stroke", "#cecece").attr("stroke-width", "0.5");

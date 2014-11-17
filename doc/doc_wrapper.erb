@@ -206,6 +206,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
     <script src="public/javascripts/states/states_packaged.js"></script>
+    <script src="public/javascripts/states/states_options.js"></script>
     <script src="public/javascripts/counties/counties_packaged.js"></script>
     <script src="public/javascripts/landline.js"></script>
     <script src="public/javascripts/landline.stateline.js"></script>
@@ -218,7 +219,7 @@
     </script>
     <script>
       $(function() {
-        var map = window.currentMap = new Landline.Stateline("#landline_container", "states");
+        var map = window.currentMap = new Landline.Stateline("#landline_container", "states", options);
         var tmpl = _.template($("#landline_tooltip_tmpl").html());
 
         map.on('mouseover', function(e, path, data) {
