@@ -9,21 +9,18 @@
     this.locality  = locality;
     this.container = $(container);
     this.container.css("position", "relative");
-    this.container.height(this.container.width() * 0.70);
+    this.container.height(this.container.width() * 0.80);
     this.setupHtml();
 
     var that = this;
     $(window).resize(function() {
-      that.container.height(that.container.width() * 0.70);
+      that.container.height(that.container.width() * 0.80);
       that.setupHtml();
     });
   };
 
   MapCanvas.CONTAINERS = {
-    "continental" : {el : "landline_continental"},
-    "alaska"      : {el : "landline_alaska"},
-    "hawaii"      : {el : "landline_hawaii"},
-    "dc"          : {el : "landline_dc"}
+    "continental" : {el : "landline_continental"}
   };
 
   MapCanvas.prototype.on = function(evt, cb) {
@@ -54,30 +51,9 @@
 
     containers["continental"] = _.extend(containers["continental"], {
       width  : this.container.width(),
-      height : this.container.height() * 0.85,
+      height : this.container.height(),
       top    : "0%",
       left   : 0.0
-    });
-
-    containers["alaska"] = _.extend(containers["alaska"], {
-      width  : this.container.width() * 0.25,
-      height : this.container.height() * 0.27,
-      top    : "63%",
-      left   : 0.0
-    });
-
-    containers["hawaii"] = _.extend(containers["hawaii"], {
-      width  : this.container.width() * 0.15,
-      height : this.container.height() * 0.21,
-      top    : "70%",
-      left   : 0.25
-    });
-
-    containers["dc"] = _.extend(containers["dc"], {
-      width  : this.container.width() * 0.02,
-      height : this.container.height() * 0.08,
-      top    : "34.5%",
-      left   : 0.915
     });
 
     var setPositions = function(container) {
