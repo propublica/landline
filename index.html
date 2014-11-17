@@ -222,6 +222,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
     <script src="public/javascripts/states/states_packaged.js"></script>
+    <script src="public/javascripts/states/states_options.js"></script>
     <script src="public/javascripts/counties/counties_packaged.js"></script>
     <script src="public/javascripts/landline.js"></script>
     <script src="public/javascripts/landline.stateline.js"></script>
@@ -234,7 +235,7 @@
     </script>
     <script>
       $(function() {
-        var map = window.currentMap = new Landline.Stateline("#landline_container", "states");
+        var map = window.currentMap = new Landline.Stateline("#landline_container", "states", options);
         var tmpl = _.template($("#landline_tooltip_tmpl").html());
 
         map.on('mouseover', function(e, path, data) {
@@ -276,7 +277,7 @@
     </script>
   </head>
   <body>
-    <h1>Landline + Stateline</h1>
+    <h1>Landline + Stateline 0.1.0</h1>
     <p><a href="https://github.com/propublica/landline/blob/master/public/javascripts/landline.js">Landline</a> is a JavaScript library that creates SVG maps from GeoJSON. It comes with <a href="https://github.com/propublica/landline/blob/master/public/javascripts/landline.stateline.js">Stateline</a>, which makes creating responsive U.S. state and county maps easy.</p>
 
     <p>The source is at <a href="https://github.com/propublica/landline">Github</a>. Please report issues or ask questions in the <a href="https://github.com/propublica/landline/issues">issue tracker</a>.</p>
@@ -321,10 +322,10 @@
 
 <h3>Stateline</h3>
 
-<p>Stateline uses Landline to generate responsive maps of U.S. states and counties. To use Stateline, include the packaged <a href="https://github.com/propublica/landline/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/landline/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:</p>
+<p>Stateline uses Landline to generate responsive maps of U.S. states and counties. To use Stateline, include the packaged <a href="https://github.com/propublica/landline/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/landline/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, as well as the <a href="https://github.com/propublica/landline/blob/master/public/javascripts/states/states_options.js">states</a> or <a href="https://github.com/propublica/landline/blob/master/public/javascripts/counties/counties_options.js">counties</a> options files. Then initialize and draw your map with the following code:</p>
 
 <div class="highlight"><pre><span class="c1">// Pass in a container element and a &quot;states&quot; or &quot;counties&quot; locality</span>
-<span class="kd">var</span> <span class="nx">stateMap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Landline</span><span class="p">.</span><span class="nx">Stateline</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="s2">&quot;states&quot;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">stateMap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Landline</span><span class="p">.</span><span class="nx">Stateline</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="s2">&quot;states&quot;</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
 
 <span class="c1">// Draw the map</span>
 <span class="nx">stateMap</span><span class="p">.</span><span class="nx">createMap</span><span class="p">();</span>
@@ -362,7 +363,7 @@ For example, the map above has the following styles:</p>
 <div id="full_example"></div>
 
 
-<p>The demo above is <a href="http://censusreporter.org/data/map/?table=B06011&amp;geo_ids=040|01000US">median income by state</a> from the American Community Survey. Here&rsquo;s how to make that map:</p>
+<p>The demo above is <a href="http://censusreporter.org/data/map/?table=B06011&amp;geo_ids=040|01000US">median income by state</a> from the American Community Survey. See a <a href="demo-state.html">standalone demo</a>. The code to make that map is below:</p>
 
 <div class="highlight"><pre><span class="cp">&lt;!doctype html&gt;</span>
 <span class="nt">&lt;html&gt;</span>
@@ -399,8 +400,9 @@ For example, the map above has the following styles:</p>
     <span class="c">&lt;!-- Bring your own copy of jQuery/Underscore/Raphael here --&gt;</span>
     <span class="c">&lt;!-- To support IE &lt; 9, include jQuery 1.x --&gt;</span>
 
-    <span class="c">&lt;!-- Load the states package --&gt;</span>
+    <span class="c">&lt;!-- Load the states package and options --&gt;</span>
     <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;public/javascripts/states/states_packaged.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;public/javascripts/states/states_options.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
 
     <span class="c">&lt;!-- Load Landline and Stateline --&gt;</span>
     <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;public/javascripts/landline.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
@@ -426,7 +428,7 @@ For example, the map above has the following styles:</p>
     <span class="nt">&lt;script&gt;</span>
       <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
         <span class="c1">// Initialize the map</span>
-        <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Landline</span><span class="p">.</span><span class="nx">Stateline</span><span class="p">(</span><span class="s2">&quot;#landline_container&quot;</span><span class="p">,</span> <span class="s2">&quot;states&quot;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Landline</span><span class="p">.</span><span class="nx">Stateline</span><span class="p">(</span><span class="s2">&quot;#landline_container&quot;</span><span class="p">,</span> <span class="s2">&quot;states&quot;</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
         
         <span class="c1">// Set up the tooltip template</span>
         <span class="kd">var</span> <span class="nx">tmpl</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">template</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#landline_tooltip_tmpl&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">());</span>
@@ -482,6 +484,88 @@ For example, the map above has the following styles:</p>
   <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
+
+
+<h2>Custom Maps</h2>
+
+<p>Stateline can currently create custom county maps for specific states, or any other collection of counties, such as New York City boroughs. To create a custom map, create your own package file (so the map only draws the counties you need) and options file (in case you want to adjust any settings).</p>
+
+<p>To create your own package file, begin with the template below. Here is an example <a href="https://github.com/propublica/landline/blob/master/public/javascripts/nyc/boroughs_packaged.js">NYC boroughs</a> package file.</p>
+
+<div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">StatelineCounties</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">StatelineCounties</span><span class="p">.</span><span class="nx">contiguous</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span><span class="s2">&quot;features&quot;</span><span class="o">:</span><span class="p">[</span>
+    <span class="c1">// Each object represents one county, create as many as you need</span>
+    <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span><span class="s2">&quot;geometry&quot;</span><span class="o">:</span><span class="p">{</span>
+        <span class="c1">// Polygon or MultiPolygon</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;MultiPolygon&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span><span class="nx">YOUR</span> <span class="nx">COORDINATES</span> <span class="nx">HERE</span><span class="p">]</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="p">{</span>
+        <span class="s2">&quot;s&quot;</span><span class="o">:</span><span class="s2">&quot;36&quot;</span><span class="p">,</span> <span class="c1">// state fips</span>
+        <span class="s2">&quot;c&quot;</span><span class="o">:</span><span class="s2">&quot;085&quot;</span><span class="p">,</span> <span class="c1">// county fips</span>
+        <span class="s2">&quot;n&quot;</span><span class="o">:</span><span class="s2">&quot;Staten Island&quot;</span> <span class="c1">// county name, which will be displayed on the map</span>
+        <span class="s2">&quot;countyName&quot;</span><span class="o">:</span><span class="s2">&quot;Richmond&quot;</span><span class="p">,</span> <span class="c1">// add additional properties as desired</span>
+        <span class="s2">&quot;gid&quot;</span><span class="o">:</span><span class="kc">null</span><span class="p">,</span>
+        <span class="s2">&quot;BoroCode&quot;</span><span class="o">:</span><span class="mi">5</span><span class="p">,</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span><span class="s2">&quot;geometry&quot;</span><span class="o">:</span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;MultiPolygon&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span><span class="nx">YOUR</span> <span class="nx">COORDINATES</span> <span class="nx">HERE</span><span class="p">]</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="p">{</span>
+        <span class="s2">&quot;s&quot;</span><span class="o">:</span><span class="s2">&quot;36&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;c&quot;</span><span class="o">:</span><span class="s2">&quot;061&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;n&quot;</span><span class="o">:</span><span class="s2">&quot;Manhattan&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;countyName&quot;</span><span class="o">:</span><span class="s2">&quot;New York&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;gid&quot;</span><span class="o">:</span><span class="kc">null</span><span class="p">,</span>
+        <span class="s2">&quot;BoroCode&quot;</span><span class="o">:</span><span class="mi">1</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">]}</span>
+<span class="p">})(</span><span class="nb">window</span><span class="p">);</span>
+</pre></div>
+
+
+<p>To create your own options file, begin with the template below. Here is an example <a href="https://github.com/propublica/landline/blob/master/public/javascripts/nyc/boroughs_options.js">NYC boroughs</a> options file.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">containers</span> <span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;contiguous&quot;</span> <span class="o">:</span> <span class="p">{</span><span class="nx">el</span> <span class="o">:</span> <span class="s2">&quot;landline_contiguous&quot;</span><span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nx">main</span> <span class="o">:</span> <span class="p">{</span>
+    <span class="nx">heightMultiplier</span> <span class="o">:</span> <span class="mi">1</span>
+  <span class="p">},</span>
+  <span class="nx">extensions</span> <span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;contiguous&quot;</span> <span class="o">:</span> <span class="p">{</span>
+      <span class="nx">widthMultiplier</span> <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="nx">heightMultiplier</span> <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="nx">top</span>    <span class="o">:</span> <span class="s2">&quot;0%&quot;</span><span class="p">,</span>
+      <span class="nx">left</span>   <span class="o">:</span> <span class="mf">0.0</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>View our <a href="demo-nyc.html">NYC Borough Map demo</a>.</p>
+
+<h2>Changelog</h2>
+
+<h3>0.1.0</h3>
+
+<ul>
+<li>Easier creation of custom maps by county.</li>
+<li>Extracted options into a separate file so users can change map width, height and custom containers without changing the source code.</li>
+</ul>
+
+
+<h3>0.0.0</h3>
+
+<ul>
+<li>Initial Release</li>
+</ul>
 
 
 <h2>License</h2>

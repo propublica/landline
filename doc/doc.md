@@ -45,11 +45,11 @@ CODE
 
 ### Stateline
 
-Stateline uses Landline to generate responsive maps of U.S. states and counties. To use Stateline, include the packaged <a href="https://github.com/propublica/landline/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/landline/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, then initialize and draw your map:
+Stateline uses Landline to generate responsive maps of U.S. states and counties. To use Stateline, include the packaged <a href="https://github.com/propublica/landline/blob/master/public/javascripts/states/states_packaged.js">states</a> or <a href="https://github.com/propublica/landline/blob/master/public/javascripts/counties/counties_packaged.js">counties</a> JavaScript file, as well as the <a href="https://github.com/propublica/landline/blob/master/public/javascripts/states/states_options.js">states</a> or <a href="https://github.com/propublica/landline/blob/master/public/javascripts/counties/counties_options.js">counties</a> options files. Then initialize and draw your map with the following code:
 
 <%= highlight 'javascript', <<-CODE
 // Pass in a container element and a "states" or "counties" locality
-var stateMap = new Landline.Stateline(el, "states");
+var stateMap = new Landline.Stateline(el, "states", options);
 
 // Draw the map
 stateMap.createMap();
@@ -87,7 +87,7 @@ CODE
 ### Full Example
 
 <div id="full_example"></div>
-The demo above is [median income by state](http://censusreporter.org/data/map/?table=B06011&geo_ids=040|01000US) from the American Community Survey. Here's how to make that map:
+The demo above is [median income by state](http://censusreporter.org/data/map/?table=B06011&geo_ids=040|01000US) from the American Community Survey. See a <a href="demo-state.html">standalone demo</a>. The code to make that map is below:
 
 <%= highlight 'html', <<-CODE
 <!doctype html>
@@ -125,8 +125,9 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
     <!-- Bring your own copy of jQuery/Underscore/Raphael here -->
     <!-- To support IE < 9, include jQuery 1.x -->
 
-    <!-- Load the states package -->
+    <!-- Load the states package and options -->
     <script src="public/javascripts/states/states_packaged.js"></script>
+    <script src="public/javascripts/states/states_options.js"></script>
 
     <!-- Load Landline and Stateline -->
     <script src="public/javascripts/landline.js"></script>
@@ -152,7 +153,7 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
     <script>
       $(function() {
         // Initialize the map
-        var map = new Landline.Stateline("#landline_container", "states");
+        var map = new Landline.Stateline("#landline_container", "states", options);
         
         // Set up the tooltip template
         var tmpl = _.template($("#landline_tooltip_tmpl").html());
@@ -209,6 +210,84 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
 </html>
 CODE
 %>
+
+## Custom Maps
+
+Stateline can currently create custom county maps for specific states, or any other collection of counties, such as New York City boroughs. To create a custom map, create your own package file (so the map only draws the counties you need) and options file (in case you want to adjust any settings).
+
+To create your own package file, begin with the template below. Here is an example <a href="https://github.com/propublica/landline/blob/master/public/javascripts/nyc/boroughs_packaged.js">NYC boroughs</a> package file.
+
+<%= highlight 'javascript', <<-CODE
+(function() {
+  window.StatelineCounties = {};
+  window.StatelineCounties.contiguous = {"type":"FeatureCollection","features":[
+    // Each object represents one county, create as many as you need
+    {"type":"Feature","geometry":{
+        // Polygon or MultiPolygon
+        "type":"MultiPolygon",
+        "coordinates": [YOUR COORDINATES HERE]
+      },
+      "properties":{
+        "s":"36", // state fips
+        "c":"085", // county fips
+        "n":"Staten Island" // county name, which will be displayed on the map
+        "countyName":"Richmond", // add additional properties as desired
+        "gid":null,
+        "BoroCode":5,
+      }
+    },
+    {"type":"Feature","geometry":{
+        "type":"MultiPolygon",
+        "coordinates": [YOUR COORDINATES HERE]
+      },
+      "properties":{
+        "s":"36",
+        "c":"061",
+        "n":"Manhattan",
+        "countyName":"New York",
+        "gid":null,
+        "BoroCode":1
+      }
+    }
+  ]}
+})(window);
+CODE
+%>
+
+To create your own options file, begin with the template below. Here is an example <a href="https://github.com/propublica/landline/blob/master/public/javascripts/nyc/boroughs_options.js">NYC boroughs</a> options file.
+
+<%= highlight 'javascript', <<-CODE
+var options = {
+  containers : {
+    "contiguous" : {el : "landline_contiguous"}
+  },
+  main : {
+    heightMultiplier : 1
+  },
+  extensions : {
+    "contiguous" : {
+      widthMultiplier : 1,
+      heightMultiplier : 1,
+      top    : "0%",
+      left   : 0.0
+    }
+  }
+}
+CODE
+%>
+
+View our <a href="demo-nyc.html">NYC Borough Map demo</a>.
+
+## Changelog
+
+### 0.1.0
+
+* Easier creation of custom maps by county.
+* Extracted options into a separate file so users can change map width, height and custom containers without changing the source code.
+
+### 0.0.0
+
+* Initial Release
 
 ## License
 

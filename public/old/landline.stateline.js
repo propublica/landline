@@ -1,7 +1,7 @@
 (function() {
   // Stateline puts default collections of Landline maps together for you
   // Requires jQuery and Raphael
-  var MapCanvas = Landline.Stateline = function(container, locality, opts) {
+  var MapCanvas = Landline.Stateline = function(container, locality) {
     this.paper     = {};
     this.events    = {};
     this.attrs     = {};
@@ -9,18 +9,21 @@
     this.locality  = locality;
     this.container = $(container);
     this.container.css("position", "relative");
-    
-    this.opts = _.extend({}, opts);
-    this.container.height(this.container.width() * this.opts.main.heightMultiplier);
-    this.containers = this.opts.containers;
-    this.extensions = this.opts.extensions;
+    this.container.height(this.container.width() * 0.70);
     this.setupHtml();
 
     var that = this;
     $(window).resize(function() {
-      that.container.height(that.container.width() * that.opts.main.heightMultiplier);
+      that.container.height(that.container.width() * 0.70);
       that.setupHtml();
     });
+  };
+
+  MapCanvas.CONTAINERS = {
+    "contiguous" : {el : "landline_contiguous"},
+    "alaska"      : {el : "landline_alaska"},
+    "hawaii"      : {el : "landline_hawaii"},
+    "dc"          : {el : "landline_dc"}
   };
 
   MapCanvas.prototype.on = function(evt, cb) {
@@ -33,7 +36,7 @@
   };
 
   MapCanvas.prototype.reLayout = function() {
-    for (container in this.containers) {
+    for (container in MapCanvas.CONTAINERS) {
       for (fips in this.attrs) {
         var path = this.lookup[fips];
         if (path) {
@@ -47,14 +50,35 @@
 
   MapCanvas.prototype.setupHtml = function() {
     var that = this;
-    var containers = that.containers;
+    var containers = MapCanvas.CONTAINERS;
 
-    for (c in containers) {
-      containers[c] = _.extend(containers[c], that.extensions[c], {
-        width  : this.container.width() * that.extensions[c].widthMultiplier,
-        height : this.container.height() * that.extensions[c].heightMultiplier,
-      });
-    }
+    containers["contiguous"] = _.extend(containers["contiguous"], {
+      width  : this.container.width(),
+      height : this.container.height() * 0.85,
+      top    : "0%",
+      left   : 0.0
+    });
+
+    containers["alaska"] = _.extend(containers["alaska"], {
+      width  : this.container.width() * 0.25,
+      height : this.container.height() * 0.27,
+      top    : "63%",
+      left   : 0.0
+    });
+
+    containers["hawaii"] = _.extend(containers["hawaii"], {
+      width  : this.container.width() * 0.15,
+      height : this.container.height() * 0.21,
+      top    : "70%",
+      left   : 0.25
+    });
+
+    containers["dc"] = _.extend(containers["dc"], {
+      width  : this.container.width() * 0.02,
+      height : this.container.height() * 0.08,
+      top    : "34.5%",
+      left   : 0.915
+    });
 
     var setPositions = function(container) {
       $("#" + containers[container].el)
@@ -89,8 +113,7 @@
   MapCanvas.prototype.createMap = function() {
     var data;
     var that       = this;
-    var containers = that.containers;
-
+    var containers = MapCanvas.CONTAINERS;
     if (this.locality === "states")   data = window.StatelineStates;
     if (this.locality === "counties") data = window.StatelineCounties;
     for (container in containers) {
