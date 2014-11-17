@@ -92,60 +92,61 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
 <%= highlight 'html', <<-CODE
 <!doctype html>
 <html>
-  <style>
-    #landline_container {
-      width:95%;
-      max-width:600px;
-    }
-    #landline_tooltip {
-      position:absolute;
-      background:rgba(222, 222, 222, 0.95);
-      z-index:999999;
-      font-family: Helvetica, Arial, sans-serif;
-      font-weight:bold;
-      font-size:12px;
-      padding:5px;
-      border-radius:2px;
-      box-shadow:0 0 5px #444;
-      display:none;
-    }
-    #landline_tooltip h2 {
-      margin:0;
-      padding:0;
-      font-size:14px;
-    }
-    .tooltip_sub {
-      font-size:12px;
-      font-weight:normal;
-      display:inline-block;
-      line-height:14px;
-    }
-  </style>
-  <!-- Bring your own copy of jQuery/Underscore/Raphael here -->
-  <!-- To support IE < 9, include jQuery 1.x -->
+  <head>
+    <style>
+      #landline_container {
+        width:95%;
+        max-width:600px;
+      }
+      #landline_tooltip {
+        position:absolute;
+        background:rgba(222, 222, 222, 0.95);
+        z-index:999999;
+        font-family: Helvetica, Arial, sans-serif;
+        font-weight:bold;
+        font-size:12px;
+        padding:5px;
+        border-radius:2px;
+        box-shadow:0 0 5px #444;
+        display:none;
+      }
+      #landline_tooltip h2 {
+        margin:0;
+        padding:0;
+        font-size:14px;
+      }
+      .tooltip_sub {
+        font-size:12px;
+        font-weight:normal;
+        display:inline-block;
+        line-height:14px;
+      }
+    </style>
+    <!-- Bring your own copy of jQuery/Underscore/Raphael here -->
+    <!-- To support IE < 9, include jQuery 1.x -->
 
-  <!-- Load the states package -->
-  <script src="public/javascripts/states/states_packaged.js"></script>
+    <!-- Load the states package -->
+    <script src="public/javascripts/states/states_packaged.js"></script>
 
-  <!-- Load Landline and Stateline -->
-  <script src="public/javascripts/landline.js"></script>
-  <script src="public/javascripts/landline.stateline.js"></script>
-  
-  <!-- Create a tooltip container -->
-  <script type="text/jst" id="landline_tooltip_tmpl">
-    <h2>{{= n }}</h2>
-    <span class="tooltip_sub">
-      Median income<br>
-      ${{= med_income }}
-      <span class='tooltip_moe'><br>± ${{= moe }}</span>
-    </span>
-  </script>
+    <!-- Load Landline and Stateline -->
+    <script src="public/javascripts/landline.js"></script>
+    <script src="public/javascripts/landline.stateline.js"></script>
+    
+    <!-- Create a tooltip container -->
+    <script type="text/jst" id="landline_tooltip_tmpl">
+      <h2>{{= n }}</h2>
+      <span class="tooltip_sub">
+        Median income<br>
+        ${{= med_income }}
+        <span class='tooltip_moe'><br>± ${{= moe }}</span>
+      </span>
+    </script>
 
-  <!-- Census median income data, via http://censusreporter.org/data/map/?table=B06011&geo_ids=040|01000US -->
-  <script>
-    var census = {"01":["Alabama",21830,266],"02":["Alaska",29932,1140],"04":["Arizona",25307,247],"05":["Arkansas",21529,201],"06":["California",25971,104],"08":["Colorado",29237,430],"09":["Connecticut",31920,247],"10":["Delaware",28405,921],"11":["District of Columbia",38014,1708],"12":["Florida",23387,172],"13":["Georgia",24682,253],"15":["Hawaii",29786,621],"16":["Idaho",22166,317],"17":["Illinois",27301,120],"18":["Indiana",24801,269],"19":["Iowa",26717,254],"20":["Kansas",26299,284],"21":["Kentucky",21871,186],"22":["Louisiana",22416,215],"23":["Maine",24367,496],"24":["Maryland",34564,457],"25":["Massachusetts",31016,231],"26":["Michigan",23938,206],"27":["Minnesota",30094,193],"28":["Mississippi",20206,292],"29":["Missouri",23933,251],"30":["Montana",23536,553],"31":["Nebraska",26450,308],"32":["Nevada",26328,314],"33":["New Hampshire",30651,420],"34":["New Jersey",32158,208],"35":["New Mexico",22775,364],"36":["New York",28449,247],"37":["North Carolina",23946,258],"38":["North Dakota",29326,721],"39":["Ohio",24778,170],"40":["Oklahoma",23460,298],"41":["Oregon",24445,303],"42":["Pennsylvania",25874,144],"44":["Rhode Island",26840,524],"45":["South Carolina",22451,260],"46":["South Dakota",25866,439],"47":["Tennessee",22570,265],"48":["Texas",25227,122],"49":["Utah",25043,402],"50":["Vermont",26323,492],"51":["Virginia",30322,193],"53":["Washington",29109,337],"54":["West Virginia",21494,268],"55":["Wisconsin",26668,179],"56":["Wyoming",26778,725]};
-  </script>
-
+    <!-- Census median income data, via http://censusreporter.org/data/map/?table=B06011&geo_ids=040|01000US -->
+    <script>
+      var census = {"01":["Alabama",21830,266],"02":["Alaska",29932,1140],"04":["Arizona",25307,247],"05":["Arkansas",21529,201],"06":["California",25971,104],"08":["Colorado",29237,430],"09":["Connecticut",31920,247],"10":["Delaware",28405,921],"11":["District of Columbia",38014,1708],"12":["Florida",23387,172],"13":["Georgia",24682,253],"15":["Hawaii",29786,621],"16":["Idaho",22166,317],"17":["Illinois",27301,120],"18":["Indiana",24801,269],"19":["Iowa",26717,254],"20":["Kansas",26299,284],"21":["Kentucky",21871,186],"22":["Louisiana",22416,215],"23":["Maine",24367,496],"24":["Maryland",34564,457],"25":["Massachusetts",31016,231],"26":["Michigan",23938,206],"27":["Minnesota",30094,193],"28":["Mississippi",20206,292],"29":["Missouri",23933,251],"30":["Montana",23536,553],"31":["Nebraska",26450,308],"32":["Nevada",26328,314],"33":["New Hampshire",30651,420],"34":["New Jersey",32158,208],"35":["New Mexico",22775,364],"36":["New York",28449,247],"37":["North Carolina",23946,258],"38":["North Dakota",29326,721],"39":["Ohio",24778,170],"40":["Oklahoma",23460,298],"41":["Oregon",24445,303],"42":["Pennsylvania",25874,144],"44":["Rhode Island",26840,524],"45":["South Carolina",22451,260],"46":["South Dakota",25866,439],"47":["Tennessee",22570,265],"48":["Texas",25227,122],"49":["Utah",25043,402],"50":["Vermont",26323,492],"51":["Virginia",30322,193],"53":["Washington",29109,337],"54":["West Virginia",21494,268],"55":["Wisconsin",26668,179],"56":["Wyoming",26778,725]};
+    </script>
+  </head>
   <body>
     <div id="landline_container"></div>
     <script>
