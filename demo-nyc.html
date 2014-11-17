@@ -32,16 +32,17 @@
     </style>
     <!-- Bring your own copy of jQuery/Underscore/Raphael here -->
     <!-- To support IE < 9, include jQuery 1.x -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
 
-    <!-- Load the NYC boroughs package -->
-    <script src="public/javascripts/nyc/boroughs.js"></script>
+    <!-- Load the NYC boroughs package and options -->
+    <script src="public/javascripts/nyc/boroughs_packaged.js"></script>
+    <script src="public/javascripts/nyc/boroughs_options.js"></script>
 
     <!-- Load Landline and Stateline -->
     <script src="public/javascripts/landline.js"></script>
-    <script src="public/javascripts/landline.stateline-v2.js"></script>
+    <script src="public/javascripts/landline.borderline.js"></script>
     
     <!-- Create a tooltip container -->
     <script type="text/jst" id="landline_tooltip_tmpl">
@@ -49,13 +50,14 @@
       <span class="tooltip_sub">
         Median income<br>
         $<%= med_income %>
-        <span class='tooltip_moe'><br>± $<%= moe %></span>
+        <span class='tooltip_moe'><br>&plusmn; $<%= moe %></span>
       </span>
     </script>
 
     <!-- Census median income data, via http://censusreporter.org/data/map/?table=B06011&geo_ids=040|01000US -->
+    <!-- Completely dummy data below -->
     <script>
-      var census = {"36085":["Alabama",21830,266],"36061":["Alaska",29932,1140],"36005":["Arizona",25307,247],"36047":["Arkansas",21529,201],"36081":["California",25971,104]};
+      var census = {"36085":["Staten Island",21830,266],"36061":["Manhattan",29932,1140],"36005":["Bronx",25307,247],"36047":["Brooklyn",21529,201],"36081":["Queens",25971,104]};
     </script>
   </head>
   <body>
@@ -63,27 +65,8 @@
     <script>
       $(function() {
 
-        var options = {
-          containers : {
-            "continental" : {el : "landline_continental"}
-          },
-          main : {
-            heightMultiplier : 0.8
-          },
-          extensions : {
-            "continental" : {
-              widthMultiplier : 1,
-              heightMultiplier : 1,
-              top    : "0%",
-              left   : 0.0
-            }
-          }
-          
-        }
-
-
         // Initialize the map
-        var map = new Landline.Stateline("#landline_container", "counties", options);
+        var map = new Landline.Borderline("#landline_container", "counties", options);
         
         // Set up the tooltip template
         var tmpl = _.template($("#landline_tooltip_tmpl").html());

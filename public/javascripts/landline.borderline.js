@@ -1,7 +1,7 @@
 (function() {
-  // Stateline puts default collections of Landline maps together for you
+  // Borderline puts default collections of Landline maps together for you
   // Requires jQuery and Raphael
-  var MapCanvas = Landline.Stateline = function(container, locality, opts) {
+  var MapCanvas = Landline.Borderline = function(container, locality, opts) {
     this.paper     = {};
     this.events    = {};
     this.attrs     = {};
@@ -91,8 +91,8 @@
     var that       = this;
     var containers = that.containers;
 
-    if (this.locality === "states")   data = window.StatelineStates;
-    if (this.locality === "counties") data = window.StatelineCounties;
+    if (this.locality === "states")   data = window.BorderlineStates;
+    if (this.locality === "counties") data = window.BorderlineCounties;
     for (container in containers) {
       var localityMap = new Landline(data[container]).all();
       localityMap.asSVG(containers[container].width, containers[container].height, function(svg, it) {
