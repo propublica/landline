@@ -41,7 +41,7 @@
 
     <!-- Load Landline and Stateline -->
     <script src="public/javascripts/landline.js"></script>
-    <script src="public/javascripts/landline.skyline.js"></script>
+    <script src="public/javascripts/landline.stateline-v2.js"></script>
     
     <!-- Create a tooltip container -->
     <script type="text/jst" id="landline_tooltip_tmpl">
@@ -62,8 +62,28 @@
     <div id="landline_container"></div>
     <script>
       $(function() {
+
+        var options = {
+          containers : {
+            "continental" : {el : "landline_continental"}
+          },
+          main : {
+            heightMultiplier : 0.8
+          },
+          extensions : {
+            "continental" : {
+              widthMultiplier : 1,
+              heightMultiplier : 1,
+              top    : "0%",
+              left   : 0.0
+            }
+          }
+          
+        }
+
+
         // Initialize the map
-        var map = new Landline.Stateline("#landline_container", "counties");
+        var map = new Landline.Stateline("#landline_container", "counties", options);
         
         // Set up the tooltip template
         var tmpl = _.template($("#landline_tooltip_tmpl").html());
