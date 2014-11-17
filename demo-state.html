@@ -42,7 +42,7 @@
 
     <!-- Load Landline and Stateline -->
     <script src="public/javascripts/landline.js"></script>
-    <script src="public/javascripts/landline.borderline.js"></script>
+    <script src="public/javascripts/landline.stateline.js"></script>
     
     <!-- Create a tooltip container -->
     <script type="text/jst" id="landline_tooltip_tmpl">
@@ -65,7 +65,7 @@
       $(function() {
 
         // Initialize the map
-        var map = new Landline.Borderline("#landline_container", "states", options);
+        var map = new Landline.Stateline("#landline_container", "states", options);
         
         // Set up the tooltip template
         var tmpl = _.template($("#landline_tooltip_tmpl").html());
