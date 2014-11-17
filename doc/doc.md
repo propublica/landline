@@ -210,6 +210,17 @@ The demo above is [median income by state](http://censusreporter.org/data/map/?t
 CODE
 %>
 
+## Changelog
+
+### 0.1.0
+
+* Easier creation of custom maps by county.
+* Extracted options into a separate file so users can change map width, height and custom containers without changing the source code.
+
+### 0.0.0
+
+* Initial Release
+
 ## License
 
 Copyright (c) 2014, ProPublica
