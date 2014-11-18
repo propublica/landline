@@ -1,4 +1,10 @@
 var options = {
+  defaultStyle : {
+    "fill" : "#cecece",
+    "stroke-width" : 0.5,
+    "stroke" : "#ffffff",
+    "stroke-linejoin" : "bevel"
+  },
   containers : {
     "contiguous" : {el : "landline_contiguous"}
   },

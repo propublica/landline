@@ -99,10 +99,9 @@
         var path = that.paper[container].path(svg);
         var fips = it.fips = it.get("c") ? it.get("s") + it.get("c") : it.get("s");
         that.lookup[fips] = path;
-        path.attr("fill", "#cecece")
-            .attr('stroke-width', 0.5)
-            .attr('stroke', '#ffffff')
-            .attr('stroke-linejoin', 'bevel');
+        for (style in that.opts.defaultStyle) {
+          path.attr(style, that.opts.defaultStyle[style]);
+        }
         if (that.attrs[fips]) {
           _(that.attrs[fips]).each(function(v, k) {
             path.attr(k, v)
