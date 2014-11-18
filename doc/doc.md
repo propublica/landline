@@ -258,6 +258,12 @@ To create your own options file, begin with the template below. Here is an examp
 
 <%= highlight 'javascript', <<-CODE
 var options = {
+  defaultStyle : {
+    "fill" : "#cecece",
+    "stroke-width" : 0.5,
+    "stroke" : "#ffffff",
+    "stroke-linejoin" : "bevel"
+  },
   containers : {
     "contiguous" : {el : "landline_contiguous"}
   },
