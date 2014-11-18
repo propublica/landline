@@ -290,6 +290,7 @@ View our <a href="demo-nyc.html">NYC Borough Map demo</a>.
 
 * Easier creation of custom maps by county.
 * Extracted options into a separate file so users can change map width, height and custom containers without changing the source code.
+* Default map styling also extracted out to options.
 
 ### 0.0.0
 
