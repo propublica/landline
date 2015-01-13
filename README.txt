@@ -10,3 +10,5 @@ It comes with Stateline, which makes creating responsive U.S. state and county m
 
 Documentation: http://propublica.github.io/landline/
 Issues or questions: https://github.com/propublica/landline/issues
+
+Jan. 13, 2015: Al Jazeera America has created a jQuery wrapper for Landline/Stateline. Check it out: https://github.com/ajam/topline
