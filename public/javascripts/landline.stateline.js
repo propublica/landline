@@ -9,11 +9,13 @@
     this.locality  = locality;
     this.container = $(container);
     this.container.css("position", "relative");
-    
+
     this.opts = _.extend({}, opts);
     this.container.height(this.container.width() * this.opts.main.heightMultiplier);
     this.containers = this.opts.containers;
     this.extensions = this.opts.extensions;
+    this.containerUnique = container.replace("#", "").replace(".", "");
+
     this.setupHtml();
 
     var that = this;
@@ -57,7 +59,7 @@
     }
 
     var setPositions = function(container) {
-      $("#" + containers[container].el)
+      $("#" + containers[container].el + "-" + that.containerUnique)
         .width(containers[container].width)
         .height(containers[container].height)
         .css("top", containers[container].top)
@@ -72,9 +74,9 @@
         setPositions(container);
         this.paper[container].setSize(containers[container].width, containers[container].height);
       } else {
-        this.container.append("<div id='" + containers[container].el + "'></div>");
+        this.container.append("<div id='" + containers[container].el + "-" + that.containerUnique + "'></div>");
         setPositions(container);
-        this.paper[container] = Raphael(containers[container].el)
+        this.paper[container] = Raphael(containers[container].el + "-" + that.containerUnique);
         this.paper[container].setViewBox(0, 0, containers[container].width, containers[container].height);
         // draw the line for DC
         if (container === "contiguous") {
