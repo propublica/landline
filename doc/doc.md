@@ -288,7 +288,7 @@ View our <a href="demo-nyc.html">NYC Borough Map demo</a>.
 
 ### 0.1.1
 
-* Multiple maps per page
+* Multiple maps per page.
 
 ### 0.1.0
 
