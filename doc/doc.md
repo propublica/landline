@@ -286,6 +286,10 @@ View our <a href="demo-nyc.html">NYC Borough Map demo</a>.
 
 ## Changelog
 
+### 0.1.1
+
+* Multiple maps per page
+
 ### 0.1.0
 
 * Easier creation of custom maps by county.
